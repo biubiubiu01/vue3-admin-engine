@@ -1,12 +1,14 @@
 <template>
-    <el-checkbox-group v-model="value">
-        <template v-if="shape === 'button'">
-            <el-checkbox-button v-for="item in options" :key="item.value" :label="item.value">{{ item.label }}</el-checkbox-button>
-        </template>
-        <template v-else>
-            <el-checkbox v-for="item in options" :key="item.value" :label="item.value">{{ item.label }}</el-checkbox>
-        </template>
-    </el-checkbox-group>
+    <form-item v-bind="$attrs">
+        <el-checkbox-group v-model="value" v-bind="$attrs">
+            <template v-if="shape === 'button'">
+                <el-checkbox-button v-for="item in options" :key="item.value" :label="item.value">{{ item.label }}</el-checkbox-button>
+            </template>
+            <template v-else>
+                <el-checkbox v-for="item in options" :key="item.value" :label="item.value">{{ item.label }}</el-checkbox>
+            </template>
+        </el-checkbox-group>
+    </form-item>
 </template>
 
 <script lang="ts" setup>

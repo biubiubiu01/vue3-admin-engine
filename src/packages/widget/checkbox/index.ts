@@ -1,20 +1,15 @@
-import setting from "./src/setting";
-import renderCode from "./src/code";
+import { createComponent } from "@/plugins/create";
 
-export default {
+export default createComponent({
     sort: 5,
+
     componentName: "checkbox",
+
     title: "多选框",
+
     icon: "svg-checkbox",
-    formItem: {
-        label: "多选框"
-    },
-    col: {
-        span: 24
-    },
-    description: "checkbox多选组件",
-    renderCode,
-    props: {
+
+    scaffold: {
         options: [
             {
                 label: "选项一",
@@ -24,10 +19,8 @@ export default {
                 label: "选项二",
                 value: "2"
             }
-        ],
-        shape: "",
-        "text-color": "#ffffff",
-        fill: "#409EFF"
+        ]
     },
-    config: setting
-};
+
+    description: "checkbox多选组件"
+});

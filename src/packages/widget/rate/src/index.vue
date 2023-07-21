@@ -1,5 +1,7 @@
 <template>
-    <el-rate v-model="color" v-bind="$attrs" />
+    <form-item v-bind="$attrs">
+        <el-rate v-model="color" v-bind="$attrs" />
+    </form-item>
 </template>
 
 <script lang="ts" setup>

@@ -1,48 +1,20 @@
-import { sizeOption } from "@/constant/size";
+import { createAttrSetting, createStyleSetting, createEventSetting } from "@/plugins/create";
+import { getSchemaTpl } from "@/plugins/tpls";
 
-export default [
-    {
-        type: "group",
-        name: "基础配置",
-        children: [
-            {
-                name: "占位符",
-                field: "placeholder",
-                componentName: "input"
-            },
-            {
-                name: "悬浮宽度",
-                field: "width",
-                componentName: "input"
-            },
-            {
-                name: "显示格式",
-                field: "format",
-                componentName: "input"
-            },
-            {
-                name: "显示清空",
-                field: "clearable",
-                componentName: "switch"
-            },
-            {
-                name: "是否禁用",
-                field: "disabled",
-                componentName: "switch"
-            },
-            {
-                name: "大小",
-                field: "size",
-                componentName: "radio",
-                props: {
-                    options: sizeOption
-                }
-            },
-            {
-                name: "前缀图标",
-                field: "prefix-icon",
-                componentName: "icon-select"
-            }
-        ]
-    }
-];
+const attrSetting = createAttrSetting([
+    getSchemaTpl("model"),
+    getSchemaTpl("collapse", [
+        getSchemaTpl("basicGroup", {
+            config: [getSchemaTpl("placeholder"), getSchemaTpl("width", "悬浮宽度"), getSchemaTpl("dateFormat"), getSchemaTpl("clearable"), getSchemaTpl("size"), getSchemaTpl("prefixIcon")],
+            isFormItem: true
+        }),
+        getSchemaTpl("statusGroup", [getSchemaTpl("disabled")]),
+        getSchemaTpl("validateGroup", [])
+    ])
+]);
+
+const styleSetting = createStyleSetting([]);
+
+const eventSetting = createEventSetting([]);
+
+export default attrSetting.concat(styleSetting).concat(eventSetting);

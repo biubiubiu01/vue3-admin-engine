@@ -9,5 +9,9 @@ export default createComponent({
 
     icon: "svg-number",
 
+    scaffold: {
+        controls: false
+    },
+
     description: "数字输入框"
 });

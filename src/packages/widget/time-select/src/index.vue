@@ -1,5 +1,7 @@
 <template>
-    <el-time-select v-model="value" v-bind="$attrs" />
+    <form-item v-bind="$attrs">
+        <el-time-select v-model="value" v-bind="$attrs" />
+    </form-item>
 </template>
 
 <script lang="ts" setup>

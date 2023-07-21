@@ -1,6 +1,6 @@
 <template>
-    <form-item :label="label" :prop="name">
-        <el-input-number v-model="value" v-bind="$attrs" />
+    <form-item v-bind="$attrs">
+        <el-input-number v-model="value" v-bind="$attrs" class="input-number" />
     </form-item>
 </template>
 
@@ -13,12 +13,6 @@ const props = defineProps({
     },
     defaultValue: {
         type: Number
-    },
-    label: {
-        type: String
-    },
-    name: {
-        type: String
     }
 });
 
@@ -26,3 +20,9 @@ const emit = defineEmits(["update:modelValue"]);
 
 const value: any = useVModel(props, "modelValue", emit, { passive: true, defaultValue: props.defaultValue });
 </script>
+
+<style lang="scss" scoped>
+.input-number {
+    width: 100%;
+}
+</style>

@@ -1,23 +1,13 @@
-import setting from "./src/setting";
-import renderCode from "./src/code";
+import { createComponent } from "@/plugins/create";
 
-export default {
-    sort: 8,
+export default createComponent({
+    sort: 15,
+
     componentName: "rate",
+
     title: "评分",
+
     icon: "svg-rate",
-    formItem: {
-        label: "评分"
-    },
-    col: {
-        span: 24
-    },
-    description: "评分组件",
-    renderCode,
-    props: {
-        max: 5,
-        "low-threshold": 2,
-        "high-threshold": 4
-    },
-    config: setting
-};
+
+    description: "评分组件"
+});

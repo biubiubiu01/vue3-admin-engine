@@ -1,13 +1,7 @@
-<!--
- * @Author: lzy
- * @Date: 2023-05-29 14:14:31
- * @LastEditors: lzy
- * @LastEditTime: 2023-05-31 15:00:45
- * @FilePath: \vue3-form-drag\src\packages\widget\textarea\src\index.vue
- * 
--->
 <template>
-    <el-input v-model="value" v-bind="$attrs" type="textarea" />
+    <form-item v-bind="$attrs">
+        <el-input v-model="value" v-bind="$attrs" type="textarea" />
+    </form-item>
 </template>
 
 <script lang="ts" setup>

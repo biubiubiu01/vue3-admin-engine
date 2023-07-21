@@ -1,104 +1,81 @@
-import { sizeOption } from "@/constant/size";
+// import { sizeOption } from "@/constant/size";
 
-const colorPickerSetting = [
-    {
-        type: "group",
-        name: "基础配置",
-        children: [
-            {
-                name: "最小值",
-                field: "min",
-                componentName: "number",
-                props: {}
-            },
-            {
-                name: "最大值",
-                field: "max",
-                componentName: "number",
-                props: {}
-            },
-            {
-                name: "步长",
-                field: "step",
-                componentName: "number",
-                props: {}
-            },
-            {
-                name: "显示输入框",
-                field: "show-input",
-                componentName: "switch"
-            },
-            {
-                name: "输入框控制",
-                field: "show-input-controls",
-                componentName: "switch",
-                show: (config: any) => {
-                    return config["show-input"];
+// const colorPickerSetting = [
+//     {
+//         type: "group",
+//         name: "基础配置",
+//         children: [
+
+//
+//             {
+//                 name: "是否禁用",
+//                 field: "disabled",
+//                 componentName: "switch"
+//             },
+//             {
+//                 name: "大小",
+//                 field: "size",
+//                 componentName: "radio",
+//                 props: {
+//                     options: sizeOption
+//                 }
+//             }
+//         ]
+//     }
+// ];
+
+// export default colorPickerSetting;
+
+import { createAttrSetting, createStyleSetting, createEventSetting } from "@/plugins/create";
+import { getSchemaTpl } from "@/plugins/tpls";
+
+const attrSetting = createAttrSetting([
+    getSchemaTpl("model"),
+    getSchemaTpl("collapse", [
+        getSchemaTpl("basicGroup", {
+            config: [
+                getSchemaTpl("min", "最小值"),
+                getSchemaTpl("max", "最大值"),
+                getSchemaTpl("step"),
+                {
+                    name: "range",
+                    label: "范围选择",
+                    type: "switch"
                 },
-                props: {}
-            },
-            {
-                name: "输入框防抖",
-                field: "debounce",
-                componentName: "number",
-                show: (config: any) => {
-                    return config["show-input"];
-                }
-            },
-            {
-                name: "显示间断点",
-                field: "show-stops",
-                componentName: "switch"
-            },
-            {
-                name: "显示提示信息",
-                field: "show-tooltip",
-                componentName: "switch"
-            },
-            {
-                name: "标签",
-                field: "label",
-                componentName: "input",
-                show: (config: any) => {
-                    return !config.range;
-                }
-            },
-            {
-                name: "范围选择",
-                field: "range",
-                componentName: "switch"
-            },
-            {
-                name: "范围开始标签",
-                field: "range-start-label",
-                componentName: "input",
-                show: (config: any) => {
-                    return config.range;
-                }
-            },
-            {
-                name: "范围结束标签",
-                field: "range-end-label",
-                componentName: "input",
-                show: (config: any) => {
-                    return config.range;
-                }
-            },
-            {
-                name: "是否禁用",
-                field: "disabled",
-                componentName: "switch"
-            },
-            {
-                name: "大小",
-                field: "size",
-                componentName: "radio",
-                props: {
-                    options: sizeOption
-                }
-            }
-        ]
-    }
-];
+                {
+                    name: "show-input",
+                    label: "显示输入框",
+                    type: "switch",
+                    hiddenOn: "data.range"
+                },
+                {
+                    name: "show-input-controls",
+                    label: "输入框控制",
+                    type: "switch",
+                    visibleOn: "data['show-input']"
+                },
+                {
+                    name: "debounce",
+                    label: "输入框防抖",
+                    type: "number",
+                    visibleOn: "data['show-input']"
+                },
+                {
+                    name: "show-stops",
+                    label: "显示间断点",
+                    type: "switch"
+                },
+                getSchemaTpl("size")
+            ],
+            isFormItem: true
+        }),
+        getSchemaTpl("statusGroup", [getSchemaTpl("disabled")]),
+        getSchemaTpl("validateGroup", [])
+    ])
+]);
 
-export default colorPickerSetting;
+const styleSetting = createStyleSetting([]);
+
+const eventSetting = createEventSetting([]);
+
+export default attrSetting.concat(styleSetting).concat(eventSetting);

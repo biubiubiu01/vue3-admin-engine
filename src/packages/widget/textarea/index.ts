@@ -1,21 +1,13 @@
-import setting from "./src/setting";
-import renderCode from "./src/code";
+import { createComponent } from "@/plugins/create";
 
-export default {
+export default createComponent({
     sort: 3,
+
     componentName: "textarea",
+
     title: "多行文本",
+
     icon: "svg-textarea",
-    formItem: {
-        label: "文本输入框"
-    },
-    col: {
-        span: 24
-    },
-    description: "文本输入框",
-    renderCode,
-    props: {
-        placeholder: "请输入"
-    },
-    config: setting
-};
+
+    description: "多行文本输入框"
+});

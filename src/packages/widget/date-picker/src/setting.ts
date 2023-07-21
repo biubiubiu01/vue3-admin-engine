@@ -1,72 +1,29 @@
-import { sizeOption } from "@/constant/size";
+import { createAttrSetting, createStyleSetting, createEventSetting } from "@/plugins/create";
+import { getSchemaTpl } from "@/plugins/tpls";
 import { dateOption } from "@/constant/date";
-import { useFormData } from "@/hooks/useFormData";
 
-const { getCurrentConfig } = useFormData();
+const attrSetting = createAttrSetting([
+    getSchemaTpl("model"),
+    getSchemaTpl("collapse", [
+        getSchemaTpl("basicGroup", {
+            config: [
+                getSchemaTpl("placeholder"),
+                getSchemaTpl("dateType", dateOption),
+                getSchemaTpl("dateFormat"),
+                getSchemaTpl("dateValueFormat"),
+                getSchemaTpl("clearable"),
+                getSchemaTpl("size"),
+                getSchemaTpl("prefixIcon")
+            ],
+            isFormItem: true
+        }),
+        getSchemaTpl("statusGroup", [getSchemaTpl("disabled"), getSchemaTpl("readonly")]),
+        getSchemaTpl("validateGroup", [])
+    ])
+]);
 
-const inputSetting = [
-    {
-        type: "group",
-        name: "基础配置",
-        children: [
-            {
-                name: "占位文本",
-                field: "placeholder",
-                componentName: "input"
-            },
-            {
-                name: "日期类型",
-                field: "type",
-                props: {
-                    options: dateOption,
-                    onChange: (val: string) => {
-                        const findItem = dateOption.find((item) => item.value === val);
-                        unref(getCurrentConfig).props.format = findItem?.format;
-                        unref(getCurrentConfig).props["value-format"] = findItem?.valueFormat;
-                    }
-                },
-                componentName: "select"
-            },
-            {
-                name: "显示格式",
-                field: "format",
-                componentName: "input"
-            },
-            {
-                name: "值格式",
-                field: "value-format",
-                componentName: "input"
-            },
-            {
-                name: "显示清空",
-                field: "clearable",
-                componentName: "switch"
-            },
-            {
-                name: "是否只读",
-                field: "readonly",
-                componentName: "switch"
-            },
-            {
-                name: "是否禁用",
-                field: "disabled",
-                componentName: "switch"
-            },
-            {
-                name: "大小",
-                field: "size",
-                componentName: "radio",
-                props: {
-                    options: sizeOption
-                }
-            },
-            {
-                name: "前缀图标",
-                field: "prefix-icon",
-                componentName: "icon-select"
-            }
-        ]
-    }
-];
+const styleSetting = createStyleSetting([]);
 
-export default inputSetting;
+const eventSetting = createEventSetting([]);
+
+export default attrSetting.concat(styleSetting).concat(eventSetting);

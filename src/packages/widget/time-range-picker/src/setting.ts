@@ -1,65 +1,40 @@
-import { sizeOption } from "@/constant/size";
+import { createAttrSetting, createStyleSetting, createEventSetting } from "@/plugins/create";
+import { getSchemaTpl } from "@/plugins/tpls";
 
-const inputSetting = [
-    {
-        type: "group",
-        name: "基础配置",
-        children: [
-            {
-                name: "开始占位文本",
-                field: "start-placeholder",
-                componentName: "input"
-            },
-            {
-                name: "结束占位文本",
-                field: "end-placeholder",
-                componentName: "input"
-            },
-            {
-                name: "分割符",
-                field: "range-separator",
-                componentName: "input"
-            },
-            {
-                name: "显示格式",
-                field: "format",
-                componentName: "input",
-                props: {}
-            },
-            {
-                name: "显示清空",
-                field: "clearable",
-                props: {},
-                componentName: "switch"
-            },
-            {
-                name: "是否只读",
-                field: "readonly",
-                componentName: "switch"
-            },
-            {
-                name: "是否禁用",
-                field: "disabled",
-                componentName: "switch"
-            },
-            {
-                name: "大小",
-                field: "size",
-                componentName: "radio",
-                props: {
-                    options: sizeOption
-                }
-            },
-            {
-                name: "前缀图标",
-                field: "prefix-icon",
-                componentName: "icon-select",
-                props: {
-                    defaultValue: "Date"
-                }
-            }
-        ]
-    }
-];
+const attrSetting = createAttrSetting([
+    getSchemaTpl("model"),
+    getSchemaTpl("collapse", [
+        getSchemaTpl("basicGroup", {
+            config: [
+                {
+                    label: "前占位文本",
+                    name: "start-placeholder",
+                    type: "input"
+                },
+                {
+                    label: "结束占位文本",
+                    name: "end-placeholder",
+                    type: "input"
+                },
+                {
+                    label: "分割符",
+                    name: "range-separator",
+                    type: "input"
+                },
+                getSchemaTpl("dateFormat"),
+                getSchemaTpl("clearable"),
+                getSchemaTpl("size"),
+                getSchemaTpl("prefixIcon")
+            ],
+            isFormItem: true
+        }),
+        getSchemaTpl("statusGroup", [getSchemaTpl("disabled"), getSchemaTpl("readonly")]),
+        getSchemaTpl("validateGroup", [])
+    ])
+]);
 
-export default inputSetting;
+const styleSetting = createStyleSetting([]);
+
+const eventSetting = createEventSetting([]);
+
+export default attrSetting.concat(styleSetting).concat(eventSetting);

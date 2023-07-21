@@ -2,7 +2,9 @@ import { deepClone } from "@/utils";
 
 export const createComponent = (option: any) => {
     const componentOption = deepClone(option);
-    componentOption.scaffold = {};
+    if (!componentOption.scaffold) {
+        componentOption.scaffold = {};
+    }
     Object.assign(componentOption.scaffold, {
         type: option.componentName,
         label: option.title,

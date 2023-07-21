@@ -3,7 +3,7 @@ export const registerComponent = () => {
     const modules: any = import.meta.glob("./**/*.vue", { eager: true, import: "default" });
 
     Object.keys(modules).forEach((key: string) => {
-        const name = key.replace(/\.\/(.*)\/(.*)\/src\/index\.vue/, "$2");
+        const name = key.split("/")[2];
         componentMap.set(name, modules[key]?.default || modules[key]);
     });
 
@@ -43,5 +43,15 @@ export const createCustomWidget = () => {
 
 export const createLayoutWidget = () => {
     const modules: any = import.meta.glob("./layout/**/index.ts", { eager: true, import: "default" });
+    return Object.values(modules);
+};
+
+export const createFeedbackWidget = () => {
+    const modules: any = import.meta.glob("./feedback/**/index.ts", { eager: true, import: "default" });
+    return Object.values(modules);
+};
+
+export const createBasicWidget = () => {
+    const modules: any = import.meta.glob("./basic/**/index.ts", { eager: true, import: "default" });
     return Object.values(modules);
 };

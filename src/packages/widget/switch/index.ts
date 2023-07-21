@@ -1,7 +1,7 @@
 import { createComponent } from "@/plugins/create";
 
 export default createComponent({
-    sort: 5,
+    sort: 6,
 
     componentName: "switch",
 

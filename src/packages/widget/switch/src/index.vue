@@ -1,5 +1,5 @@
 <template>
-    <form-item :label="label" :prop="name">
+    <form-item v-bind="$attrs">
         <el-switch v-model="value" v-bind="$attrs" />
     </form-item>
 </template>
@@ -13,12 +13,6 @@ const props = defineProps({
     },
     defaultValue: {
         type: [Number, String, Boolean]
-    },
-    label: {
-        type: String
-    },
-    name: {
-        type: String
     }
 });
 

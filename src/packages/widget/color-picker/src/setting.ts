@@ -1,30 +1,27 @@
-import { sizeOption } from "@/constant/size";
+import { createAttrSetting, createStyleSetting, createEventSetting } from "@/plugins/create";
+import { getSchemaTpl } from "@/plugins/tpls";
 
-const colorPickerSetting = [
-    {
-        type: "group",
-        name: "基础配置",
-        children: [
-            {
-                name: "是否禁用",
-                field: "disabled",
-                componentName: "switch"
-            },
-            {
-                name: "选择透明度",
-                field: "show-alpha",
-                componentName: "switch"
-            },
-            {
-                name: "大小",
-                field: "size",
-                componentName: "radio",
-                props: {
-                    options: sizeOption
-                }
-            }
-        ]
-    }
-];
+const attrSetting = createAttrSetting([
+    getSchemaTpl("model"),
+    getSchemaTpl("collapse", [
+        getSchemaTpl("basicGroup", {
+            config: [
+                {
+                    label: "可透明",
+                    name: "show-alpha",
+                    type: "switch"
+                },
+                getSchemaTpl("size")
+            ],
+            isFormItem: true
+        }),
+        getSchemaTpl("statusGroup", [getSchemaTpl("disabled")]),
+        getSchemaTpl("validateGroup", [])
+    ])
+]);
 
-export default colorPickerSetting;
+const styleSetting = createStyleSetting([]);
+
+const eventSetting = createEventSetting([]);
+
+export default attrSetting.concat(styleSetting).concat(eventSetting);

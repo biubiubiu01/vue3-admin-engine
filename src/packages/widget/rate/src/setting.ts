@@ -1,52 +1,43 @@
-import { sizeOption } from "@/constant/size";
+import { createAttrSetting, createStyleSetting, createEventSetting } from "@/plugins/create";
+import { getSchemaTpl } from "@/plugins/tpls";
 
-const colorPickerSetting = [
-    {
-        type: "group",
-        name: "基础配置",
-        children: [
-            {
-                name: "最大分值",
-                field: "max",
-                componentName: "number"
-            },
-            {
-                name: "低到中阈值",
-                field: "low-threshold",
-                componentName: "number",
-                props: {}
-            },
-            {
-                name: "中到高阈值",
-                field: "high-threshold",
-                componentName: "number",
-                props: {}
-            },
-            {
-                name: "允许半选",
-                field: "allow-half",
-                componentName: "switch"
-            },
-            {
-                name: "显示分数",
-                field: "show-score",
-                componentName: "switch"
-            },
-            {
-                name: "是否禁用",
-                field: "disabled",
-                componentName: "switch"
-            },
-            {
-                name: "大小",
-                field: "size",
-                componentName: "radio",
-                props: {
-                    options: sizeOption
-                }
-            }
-        ]
-    }
-];
+const attrSetting = createAttrSetting([
+    getSchemaTpl("model"),
+    getSchemaTpl("collapse", [
+        getSchemaTpl("basicGroup", {
+            config: [
+                getSchemaTpl("max", "最大分值"),
+                {
+                    label: "低到中阈值",
+                    name: "low-threshold",
+                    type: "number"
+                },
+                {
+                    label: "中到高阈值",
+                    name: "high-threshold",
+                    type: "number"
+                },
+                {
+                    label: "允许半选",
+                    name: "allow-half",
+                    type: "switch"
+                },
+                {
+                    label: "显示分数",
+                    name: "show-score",
+                    type: "switch"
+                },
+                getSchemaTpl("size")
+            ],
+            isFormItem: true
+        }),
+        getSchemaTpl("statusGroup", [getSchemaTpl("disabled")]),
+        getSchemaTpl("validateGroup", [])
+    ])
+]);
 
-export default colorPickerSetting;
+const styleSetting = createStyleSetting([]);
+
+const eventSetting = createEventSetting([]);
+
+export default attrSetting.concat(styleSetting).concat(eventSetting);

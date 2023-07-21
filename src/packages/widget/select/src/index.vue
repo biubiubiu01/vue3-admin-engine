@@ -1,7 +1,9 @@
 <template>
-    <el-select ref="baseSelectRef" v-model="selectValue" v-bind="$attrs">
-        <el-option v-for="item in filterOptions" :key="item.value" :label="item.label" :value="item.value" />
-    </el-select>
+    <form-item v-bind="$attrs">
+        <el-select v-model="selectValue" v-bind="$attrs">
+            <el-option v-for="item in filterOptions" :key="item.value" :label="item.label" :value="item.value" />
+        </el-select>
+    </form-item>
 </template>
 
 <script lang="ts" setup>
@@ -14,10 +16,10 @@ const props = defineProps({
         default: () => []
     },
     modelValue: {
-        type: [Array, Object, String, Number, Boolean]
+        type: [Array, Object, String, Number]
     },
     defaultValue: {
-        type: [Array, Object, String, Number, Boolean],
+        type: [Array, Object, String, Number],
         default: ""
     }
 });

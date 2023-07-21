@@ -24,39 +24,15 @@ export const useFormData = () => {
     const getActiveId = computed(() => state.activeId);
     const getActiveInfo = computed(() => {
         return unref(getFormJson).find((item: any) => item.id === unref(getActiveId)) ?? {};
-        // return getFlatJson(unref(getFormJson)).find((item: any) => item.id === state.activeId) ?? {};
     });
-    // const getFlagFormJson = computed(() => getFlatJson(state.formJson));
-
-    // const getFlatJson = (list: any[]): any[] => {
-    //     const arr: any[] = [];
-    //     list.forEach((item) => {
-    //         arr.push(item);
-    //         if (item.children) {
-    //             arr.push(...getFlatJson(item.children));
-    //         }
-    //     });
-    //     return arr;
-    // };
 
     const createJson = (json: any) => {
         const newClone = deepClone(json.scaffold);
 
         const id = useNanoid();
         newClone.id = id;
-        // if (newClone.formItem) {
-        //     newClone.formItem.prop = `${json.componentName}_${id}`;
-        // }
-
-        // if (newClone.children) {
-        //     newClone.children = json.children.map((item: any) => createJson(item));
-        // }
 
         return newClone;
-    };
-
-    const setFormJson = (json: any[]) => {
-        // state.formJson = json;
     };
 
     const addJson = (json: any, index: number = state.formJson.length, parent = state.formJson) => {
@@ -101,9 +77,7 @@ export const useFormData = () => {
         getFormModel,
         getActiveId,
         getActiveInfo,
-        // getFlagFormJson,
 
-        // setFormJson,
         addJson,
         createJson,
         deleteJson,

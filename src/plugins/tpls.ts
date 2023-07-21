@@ -38,22 +38,67 @@ setSchemaTpl("formItemLabelWidth", {
     type: "input"
 });
 
-setSchemaTpl("minlength", {
-    label: "最小长度",
-    name: "minlength",
-    type: "number"
-});
-
 setSchemaTpl("maxlength", {
     label: "最大长度",
     name: "maxlength",
     type: "number"
 });
 
+setSchemaTpl("min", (title: string) => {
+    return {
+        label: title,
+        name: "min",
+        type: "number"
+    };
+});
+
+setSchemaTpl("max", (title: string) => {
+    return {
+        label: title,
+        name: "max",
+        type: "number"
+    };
+});
+
+setSchemaTpl("precision", {
+    label: "小数位数",
+    name: "precision",
+    type: "number"
+});
+
+setSchemaTpl("step", {
+    label: "步进",
+    name: "step",
+    type: "number",
+    defaultValue: 1
+});
+
+setSchemaTpl("stepStrictly", {
+    label: "严格步进",
+    name: "step-strictly",
+    type: "switch"
+});
+
 setSchemaTpl("showWordLimit", {
-    label: "显示字数",
+    label: "计数器",
     name: "show-word-limit",
     type: "switch"
+});
+
+setSchemaTpl("shape", {
+    label: "形状",
+    name: "shape",
+    type: "radio",
+    options: [
+        {
+            label: "默认",
+            value: ""
+        },
+        {
+            label: "按钮",
+            value: "button"
+        }
+    ]
 });
 
 setSchemaTpl("size", {
@@ -107,10 +152,63 @@ setSchemaTpl("autofocus", {
     type: "switch"
 });
 
+setSchemaTpl("loading", {
+    label: "加载中",
+    name: "loading",
+    type: "switch"
+});
+
+setSchemaTpl("multiple", {
+    label: "可多选",
+    name: "multiple",
+    type: "switch"
+});
+
+setSchemaTpl("dateType", (option: any[]) => {
+    return {
+        label: "日期类型",
+        name: "dateType",
+        type: "select",
+        options: option,
+        change: (val: string, data: any) => {
+            const findItem = option.find((item) => item.value === val);
+            data.format = findItem?.format;
+            data["value-format"] = findItem?.valueFormat;
+        }
+    };
+});
+
+setSchemaTpl("dateFormat", {
+    label: "显示格式",
+    name: "format",
+    type: "input"
+});
+
+setSchemaTpl("dateValueFormat", {
+    label: "值格式",
+    name: "value-format",
+    type: "input"
+});
+
 setSchemaTpl("labelRemark", {
     label: "标题提示",
     name: "labelRemark",
-    type: "switch"
+    type: "switch",
+    // formType: "dialog",
+    pipeIn: (value: any) => !!value,
+    pipeOut: (value: boolean) => {
+        if (value) {
+            return {
+                icon: "QuestionFilled",
+                trigger: "hover",
+                placement: "top",
+                title: "",
+                content: ""
+            };
+        }
+        return undefined;
+    }
+    // form: {}
 });
 
 setSchemaTpl(
@@ -131,16 +229,20 @@ setSchemaTpl(
     }
 );
 
-setSchemaTpl("basic", (config: any[]) => {
+setSchemaTpl("basicGroup", ({ config = [], isFormItem = false }) => {
+    const formItemConfig = [];
+    if (isFormItem) {
+        formItemConfig.push(getSchemaTpl("formItemLabel"), getSchemaTpl("labelRemark"), getSchemaTpl("formItemLabelWidth"));
+    }
     return {
         label: "基础配置",
         name: "basic",
         type: "collapse-item",
-        children: config
+        children: [...formItemConfig, ...config]
     };
 });
 
-setSchemaTpl("status", (config: any[]) => {
+setSchemaTpl("statusGroup", (config: any[]) => {
     return {
         label: "状态配置",
         name: "status",
@@ -149,11 +251,44 @@ setSchemaTpl("status", (config: any[]) => {
     };
 });
 
-setSchemaTpl("validate", (config: any[]) => {
+setSchemaTpl("validateGroup", (config: any[]) => {
     return {
         label: "校验配置",
         name: "validate",
         type: "collapse-item",
         children: config
+    };
+});
+
+setSchemaTpl("optionsGroup", (config: any[] = []) => {
+    return {
+        label: "选项",
+        name: "options",
+        type: "collapse-item",
+        children: [
+            // {
+            //     label: "数据来源",
+            //     name: "radio",
+            //     type: "radio",
+            //     defaultValue: "1",
+            //     options: [
+            //         {
+            //             label: "自定义数据",
+            //             value: "1"
+            //         },
+            //         {
+            //             label: "外部接口",
+            //             value: "2"
+            //         }
+            //     ]
+            // },
+            {
+                label: "",
+                name: "options",
+                type: "option-control"
+                // visibleOn: "data.radio"
+            },
+            ...config
+        ]
     };
 });

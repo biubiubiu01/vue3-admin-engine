@@ -40,7 +40,8 @@ module.exports = {
         "vue/attribute-hyphenation": "off",
         "vue/custom-event-name-casing": "off",
         "vue/multi-word-component-names": "off",
-        "vue/comment-directive": "off"
+        "vue/comment-directive": "off",
+        "no-new-func":"off"
     },
     plugins: ["vue", "@typescript-eslint"]
 };

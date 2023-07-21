@@ -27,25 +27,17 @@ const props = defineProps({
         type: String
     },
     labelRemark: {
-        type: [Boolean, Object],
-        default: false
+        type: Object,
+        default: () => {}
     }
-});
-
-const defaultRemark = readonly({
-    icon: "InfoFilled",
-    trigger: "hover",
-    placement: "top",
-    title: "",
-    content: ""
 });
 
 const getLabelRemark = computed(() => {
     const { labelRemark } = props;
     if (isObject(labelRemark)) {
-        return Object.assign({}, defaultRemark, { ...labelRemark });
+        return labelRemark;
     }
-    return defaultRemark;
+    return {};
 });
 
 const getBindValue = computed(() => {

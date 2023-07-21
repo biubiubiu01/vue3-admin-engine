@@ -1,5 +1,7 @@
 <template>
-    <el-color-picker v-model="color" v-bind="$attrs" />
+    <form-item v-bind="$attrs">
+        <el-color-picker v-model="color" v-bind="$attrs" />
+    </form-item>
 </template>
 
 <script lang="ts" setup>

@@ -1,5 +1,7 @@
 <template>
-    <el-date-picker v-model="value" :type="type" v-bind="$attrs" />
+    <form-item v-bind="$attrs">
+        <el-date-picker v-model="value" :type="dateType" v-bind="$attrs" />
+    </form-item>
 </template>
 
 <script lang="ts" setup>
@@ -13,7 +15,7 @@ const props = defineProps({
         type: [String, Number],
         default: ""
     },
-    type: {
+    dateType: {
         type: String,
         default: "date"
     }

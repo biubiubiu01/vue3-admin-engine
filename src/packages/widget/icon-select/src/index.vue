@@ -4,7 +4,7 @@
             <form-item v-bind="$attrs">
                 <el-input v-model="state.iconValue" class="base-icon-picker" :placeholder="placeholder" readonly @click="pickerVisible = true" :disabled="disabled" :size="size">
                     <template #append>
-                        <base-icon :icon="state.iconValue" v-if="state.iconValue" :size="20" />
+                        <base-icon :icon="state.iconValue" v-if="state.iconValue" :size="20" @click="pickerVisible = true" />
                     </template>
                 </el-input>
             </form-item>
