@@ -15,7 +15,7 @@
         </el-scrollbar>
         <template #footer v-if="actions.length > 0">
             <div class="base-dialog-footer" :style="{ 'text-align': btnPosition }">
-                <render-item v-for="(item, index) in actions" :key="index" :element="{ ...item, size: 'default' }" />
+                <render-item v-for="(item, index) in actions" :key="index" :element="{ ...item, size: 'default' }" :preview="preview" @action="getActions" />
             </div>
         </template>
     </el-dialog>
@@ -75,10 +75,14 @@ const props = defineProps({
                 buttonType: "primary"
             }
         ]
+    },
+    preview: {
+        type: Boolean,
+        default: false
     }
 });
 
-const emit = defineEmits(["close", "update:visible"]);
+const emit = defineEmits(["close", "update:visible", "confirm"]);
 
 const attrs = useAttrs();
 
@@ -97,6 +101,15 @@ const getBodyStyle = computed(() => {
         height: unref(getPropsValue).fullscreen ? "100%" : height
     };
 });
+
+const getActions = (event: any) => {
+    if (event.actionType === "cancel") {
+        hideDialog();
+    } else if (event.actionType === "confirm") {
+        emit("confirm");
+        hideDialog();
+    }
+};
 
 const hideDialog = () => {
     dialogVisible.value = false;

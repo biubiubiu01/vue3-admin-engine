@@ -1,7 +1,5 @@
 <template>
-    <form-item v-bind="$attrs">
-        <el-input v-model="value" v-bind="$attrs" type="textarea" />
-    </form-item>
+    <el-input v-model="value" v-bind="$attrs" type="textarea" />
 </template>
 
 <script lang="ts" setup>

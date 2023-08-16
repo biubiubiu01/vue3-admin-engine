@@ -1,9 +1,7 @@
 <template>
-    <form-item v-bind="$attrs">
-        <el-select v-model="selectValue" v-bind="$attrs">
-            <el-option v-for="item in filterOptions" :key="item.value" :label="item.label" :value="item.value" />
-        </el-select>
-    </form-item>
+    <el-select v-model="selectValue" v-bind="$attrs">
+        <el-option v-for="item in filterOptions" :key="item.value" :label="item.label" :value="item.value" />
+    </el-select>
 </template>
 
 <script lang="ts" setup>

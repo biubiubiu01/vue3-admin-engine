@@ -1,13 +1,11 @@
 <template>
     <el-popover :visible="pickerVisible" placement="bottom" :width="width" trigger="click">
         <template #reference>
-            <form-item v-bind="$attrs">
-                <el-input v-model="state.iconValue" class="base-icon-picker" :placeholder="placeholder" readonly @click="pickerVisible = true" :disabled="disabled" :size="size">
-                    <template #append>
-                        <base-icon :icon="state.iconValue" v-if="state.iconValue" :size="20" @click="pickerVisible = true" />
-                    </template>
-                </el-input>
-            </form-item>
+            <el-input v-model="state.iconValue" class="base-icon-picker" :placeholder="placeholder" readonly @click="pickerVisible = true" :disabled="disabled" :size="size">
+                <template #append>
+                    <base-icon :icon="state.iconValue" v-if="state.iconValue" :size="20" @click="pickerVisible = true" />
+                </template>
+            </el-input>
         </template>
         <div class="base-icon-content" v-click-outside="closePopover">
             <el-input v-model="state.iconFilter" placeholder="搜索图标" @input="handleSearchDebounce" />

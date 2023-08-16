@@ -1,14 +1,15 @@
 <template>
     <div class="base-collapse">
         <el-collapse v-model="activeCollapse" :accordion="accordion">
-            <el-collapse-item v-for="item in children" :key="item.name" :title="item.label" :name="item.name">
-                <render-item v-for="child in item.children" :key="child.name" :element="child" />
+            <el-collapse-item v-for="item in columns" :key="item.name" :title="item.label" :name="item.name">
+                <render-item v-for="child in item.children" :key="child.name" :data="getActiveInfo" :element="child" />
             </el-collapse-item>
         </el-collapse>
     </div>
 </template>
 
 <script lang="ts" setup>
+import { useFormData } from "@/hooks/useFormData";
 const props = defineProps({
     accordion: {
         type: Boolean,
@@ -22,16 +23,18 @@ const props = defineProps({
         type: Array,
         default: () => []
     },
-    children: {
+    columns: {
         type: Array as PropType<any[]>,
         default: () => []
     }
 });
 
+const { getActiveInfo } = useFormData();
+
 const activeCollapse = ref(props.defaultKey);
 
 if (props.defaultExpandAll) {
-    activeCollapse.value = props.children.map((item: any) => item.name);
+    activeCollapse.value = props.columns.map((item: any) => item.name);
 }
 </script>
 

@@ -1,31 +1,3 @@
-// import { sizeOption } from "@/constant/size";
-
-// const colorPickerSetting = [
-//     {
-//         type: "group",
-//         name: "基础配置",
-//         children: [
-
-//
-//             {
-//                 name: "是否禁用",
-//                 field: "disabled",
-//                 componentName: "switch"
-//             },
-//             {
-//                 name: "大小",
-//                 field: "size",
-//                 componentName: "radio",
-//                 props: {
-//                     options: sizeOption
-//                 }
-//             }
-//         ]
-//     }
-// ];
-
-// export default colorPickerSetting;
-
 import { createAttrSetting, createStyleSetting, createEventSetting } from "@/plugins/create";
 import { getSchemaTpl } from "@/plugins/tpls";
 

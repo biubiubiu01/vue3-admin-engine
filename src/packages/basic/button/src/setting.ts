@@ -1,9 +1,7 @@
-import { typeOption } from "@/constant/type";
 import { createAttrSetting, createStyleSetting, createEventSetting } from "@/plugins/create";
 import { getSchemaTpl } from "@/plugins/tpls";
 
 const attrSetting = createAttrSetting([
-    getSchemaTpl("model"),
     getSchemaTpl("collapse", [
         getSchemaTpl("basicGroup", {
             config: [
@@ -12,17 +10,8 @@ const attrSetting = createAttrSetting([
                     name: "label",
                     type: "input"
                 },
-                {
-                    label: "图标按钮",
-                    name: "icon",
-                    type: "icon-select"
-                },
-                {
-                    label: "按钮类型",
-                    name: "buttonType",
-                    type: "select",
-                    options: typeOption
-                },
+                getSchemaTpl("icon", "图标"),
+                getSchemaTpl("type", { title: "按钮类型", name: "name" }),
                 {
                     label: "朴素按钮",
                     name: "plain",
@@ -56,8 +45,7 @@ const attrSetting = createAttrSetting([
                 getSchemaTpl("size")
             ]
         }),
-        getSchemaTpl("statusGroup", [getSchemaTpl("disabled")]),
-        getSchemaTpl("validateGroup", [])
+        getSchemaTpl("statusGroup", [getSchemaTpl("disabled")])
     ])
 ]);
 

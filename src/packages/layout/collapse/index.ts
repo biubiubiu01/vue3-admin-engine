@@ -1,7 +1,7 @@
 import { createComponent } from "@/plugins/create";
 
 export default createComponent({
-    sort: 3,
+    sort: 1,
 
     componentName: "collapse",
 

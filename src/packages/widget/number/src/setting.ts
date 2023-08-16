@@ -31,7 +31,7 @@ const attrSetting = createAttrSetting([
             isFormItem: true
         }),
         getSchemaTpl("statusGroup", [getSchemaTpl("disabled"), getSchemaTpl("readonly")]),
-        getSchemaTpl("validateGroup", [])
+        getSchemaTpl("validateGroup", [getSchemaTpl("validateMax"), getSchemaTpl("validateMin")])
     ])
 ]);
 

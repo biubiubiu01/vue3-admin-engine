@@ -17,6 +17,17 @@ export const positionOption = [
     }
 ];
 
+export const basicPositionOption = [
+    {
+        label: "居左",
+        value: "left"
+    },
+    {
+        label: "居右",
+        value: "right"
+    }
+];
+
 export const formPositionOption = [
     {
         label: "左",
@@ -71,5 +82,56 @@ export const horizontalOption = [
     {
         label: "space-evenly",
         value: "space-evenly"
+    }
+];
+
+export const placementPosition = [
+    {
+        label: "top",
+        value: "top"
+    },
+    {
+        label: "top-start",
+        value: "top-start"
+    },
+    {
+        label: "top-end",
+        value: "top-end"
+    },
+    {
+        label: "bottom",
+        value: "bottom"
+    },
+    {
+        label: "bottom-start",
+        value: "bottom-start"
+    },
+    {
+        label: "bottom-end",
+        value: "bottom-end"
+    },
+    {
+        label: "left",
+        value: "left"
+    },
+    {
+        label: "left-start",
+        value: "left-start"
+    },
+    {
+        label: "left-end",
+        value: "left-end"
+    },
+    {
+        label: "right",
+        value: "right"
+    },
+    {
+        label: "right-start",
+        value: "right-start"
+    },
+    {
+        label: "right-end",
+        value: "right-end"
     }
 ];

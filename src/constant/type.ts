@@ -20,3 +20,22 @@ export const typeOption = [
         value: "info"
     }
 ];
+
+export const layoutOptions = [
+    {
+        label: "块级元素",
+        value: "block"
+    },
+    {
+        label: "行内元素",
+        value: "inline"
+    },
+    {
+        label: "行内区块",
+        value: "inline-block"
+    },
+    {
+        label: "弹性布局",
+        value: "flex"
+    }
+];

@@ -1,14 +1,12 @@
 <template>
-    <form-item v-bind="$attrs">
-        <el-radio-group v-model="value" v-bind="$attrs">
-            <template v-if="shape === 'button'">
-                <el-radio-button v-for="item in options" :key="item.value" :label="item.value">{{ item.label }}</el-radio-button>
-            </template>
-            <template v-else>
-                <el-radio v-for="item in options" :key="item.value" :label="item.value">{{ item.label }}</el-radio>
-            </template>
-        </el-radio-group>
-    </form-item>
+    <el-radio-group v-model="value" v-bind="$attrs">
+        <template v-if="shape === 'button'">
+            <el-radio-button v-for="item in options" :key="item.value" :label="item.value">{{ item.label }}</el-radio-button>
+        </template>
+        <template v-else>
+            <el-radio v-for="item in options" :key="item.value" :label="item.value">{{ item.label }}</el-radio>
+        </template>
+    </el-radio-group>
 </template>
 
 <script lang="ts" setup>

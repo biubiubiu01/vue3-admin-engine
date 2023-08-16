@@ -1,20 +1,18 @@
 <template>
     <el-popover ref="quarterPopover" trigger="click" :visible="pickerVisible" popper-class="el-date-picker base-quarter-popover" :width="width">
         <template #reference>
-            <form-item v-bind="$attrs">
-                <el-input
-                    class="el-date-editor"
-                    :disabled="disabled"
-                    :size="size"
-                    :prefix-icon="prefixIcon"
-                    :placeholder="placeholder"
-                    v-model="displayValue"
-                    :validate-event="false"
-                    :clearable="clearable"
-                    @click="pickerVisible = true"
-                    @clear="handleClickIcon"
-                />
-            </form-item>
+            <el-input
+                class="el-date-editor"
+                :disabled="disabled"
+                :size="size"
+                :prefix-icon="prefixIcon"
+                :placeholder="placeholder"
+                v-model="displayValue"
+                :validate-event="false"
+                :clearable="clearable"
+                @click="pickerVisible = true"
+                @clear="handleClickIcon"
+            />
         </template>
         <div v-click-outside="closePopover" class="el-date-picker">
             <div class="el-date-picker__header el-date-picker__header--bordered">

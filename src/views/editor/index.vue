@@ -3,7 +3,7 @@
         <el-header height="48px">
             <Header />
         </el-header>
-        <el-container class="mian-container">
+        <el-container class="main-container">
             <el-aside width="300px">
                 <WidgetPanel />
             </el-aside>

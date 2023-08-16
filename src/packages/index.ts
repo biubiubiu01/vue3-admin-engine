@@ -55,3 +55,8 @@ export const createBasicWidget = () => {
     const modules: any = import.meta.glob("./basic/**/index.ts", { eager: true, import: "default" });
     return Object.values(modules);
 };
+
+export const createDataWidget = () => {
+    const modules: any = import.meta.glob("./data/**/index.ts", { eager: true, import: "default" });
+    return Object.values(modules);
+};

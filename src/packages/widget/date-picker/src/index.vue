@@ -1,7 +1,5 @@
 <template>
-    <form-item v-bind="$attrs">
-        <el-date-picker v-model="value" :type="dateType" v-bind="$attrs" />
-    </form-item>
+    <el-date-picker v-model="value" :type="dateType" v-bind="$attrs" />
 </template>
 
 <script lang="ts" setup>

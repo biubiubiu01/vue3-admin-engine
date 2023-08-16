@@ -13,7 +13,7 @@
                             <el-tag> {{ getActiveInfo.type }}</el-tag>
                         </el-form-item>
                         <div v-for="item in tab.children" :key="item.name">
-                            <render-item :element="item" />
+                            <render-item :element="item" :data="getActiveInfo" />
                         </div>
                     </el-form>
                 </el-scrollbar>

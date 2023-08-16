@@ -1,6 +1,6 @@
 <template>
-    <el-form-item :prop="name">
-        <template #label>
+    <el-form-item :prop="model" :label="label" :class="[{ 'no-label': !label }, className]" :style="style" :size="size">
+        <template #label="{ label }">
             <div class="flex-row-center">
                 {{ label }}
                 <el-popover v-bind="getBindValue" v-if="labelRemark">
@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-import { isString, isObject } from "@/utils/is";
+import { isObject } from "@/utils/is";
 import { omit } from "@/utils";
 
 const props = defineProps({
@@ -23,13 +23,20 @@ const props = defineProps({
         type: String,
         default: ""
     },
-    name: {
+    model: {
         type: String
     },
     labelRemark: {
         type: Object,
         default: () => {}
-    }
+    },
+    className: {
+        type: [String, Object, Array]
+    },
+    style: {
+        type: [String, Object, Array]
+    },
+    size: String
 });
 
 const getLabelRemark = computed(() => {
@@ -45,4 +52,10 @@ const getBindValue = computed(() => {
 });
 </script>
 
-<style scoped></style>
+<style lang="scss">
+.el-form-item.no-label {
+    .el-form-item__label {
+        display: none;
+    }
+}
+</style>

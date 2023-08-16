@@ -1,7 +1,5 @@
 <template>
-    <form-item v-bind="$attrs">
-        <el-slider v-model="color" v-bind="$attrs" />
-    </form-item>
+    <el-slider v-model="color" v-bind="$attrs" />
 </template>
 
 <script lang="ts" setup>

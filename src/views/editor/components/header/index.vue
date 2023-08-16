@@ -39,16 +39,16 @@ import { useFormData } from "@/hooks/useFormData";
 import { useGennerateCode } from "@/hooks/useGennerateCode";
 import { useHistory } from "@/hooks/useHistory";
 
-const { getFormJson, getFormModel, saveSession, clearJson } = useFormData();
+const { getSchemaJson, saveSession, clearJson } = useFormData();
 const { gennerateCode, outputFile } = useGennerateCode();
 const { redoDisabled, undoDisabled, executeRedo, executeUndo, executeRecord } = useHistory();
 
 const handleCreateJSON = () => {
-    console.log(getFormJson);
+    console.log(getSchemaJson);
 };
 
 const handleOutputCode = () => {
-    const code = gennerateCode({ schema: getFormJson.value });
+    const code = gennerateCode({ schema: getSchemaJson.value });
     console.log(code);
 
     // outputFile(code, "form.vue");

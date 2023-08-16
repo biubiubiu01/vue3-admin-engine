@@ -8,11 +8,11 @@ const state = reactive<any>({
 
 const MAX_STEP = 20;
 
-const { getFormJson, setActive, getActiveId, setFormJson } = useFormData();
+const { getSchemaJson, setActive, getActiveId, updateSchema } = useFormData();
 
 export const useHistory = () => {
     const getStep = computed(() => state.index);
-    const getStepJson = computed(() => state.recordList[unref(getStep)]?.formJson || []);
+    const getStepJson = computed(() => state.recordList[unref(getStep)]?.schemaJson || []);
     const getStepId = computed(() => state.recordList[unref(getStep)]?.activeId || "");
     const redoDisabled = computed(() => state.index < 0);
     const undoDisabled = computed(() => state.recordList.length === 0 || state.index >= state.recordList.length - 1);
@@ -20,24 +20,24 @@ export const useHistory = () => {
     // 撤销
     const executeUndo = () => {
         state.index = Math.max(-1, state.index - 1);
-        setJson();
+        traceableSetSchema();
     };
 
     // 重做
     const executeRedo = () => {
         state.index = Math.min(state.recordList.length - 1, state.index + 1);
-        setJson();
+        traceableSetSchema();
     };
 
-    const setJson = () => {
-        setFormJson(deepClone(getStepJson.value));
+    const traceableSetSchema = () => {
+        updateSchema(deepClone(getStepJson.value));
         setActive(getStepId.value);
     };
 
     const executeRecord = () => {
         state.recordList = state.recordList.slice(0, state.index + 1);
         state.recordList.push({
-            formJson: deepClone(getFormJson.value),
+            schemaJson: deepClone(unref(getSchemaJson)),
             activeId: getActiveId.value
         });
         state.recordList = state.recordList.slice(-MAX_STEP);

@@ -1,4 +1,11 @@
 import { sizeOption } from "@/constant/size";
+import { typeOption, layoutOptions } from "@/constant/type";
+import { placementPosition, formPositionOption, horizontalOption, verticalOption } from "@/constant/position";
+import { tagOptions } from "@/constant/tag";
+import { triggerOption, ruleTriggerOption } from "@/constant/trigger";
+import { useFormData } from "@/hooks/useFormData";
+
+const { getActiveInfo } = useFormData();
 
 const tpls: {
     [propName: string]: any;
@@ -35,7 +42,20 @@ setSchemaTpl("placeholder", {
 setSchemaTpl("formItemLabelWidth", {
     label: "标题宽度",
     name: "label-width",
-    type: "input"
+    type: "number"
+});
+
+setSchemaTpl("formLabelPosition", {
+    label: "标题位置",
+    name: "label-position",
+    type: "radio",
+    options: formPositionOption
+});
+
+setSchemaTpl("formSuffix", {
+    label: "显示冒号",
+    name: "label-suffix",
+    type: "switch"
 });
 
 setSchemaTpl("maxlength", {
@@ -108,6 +128,50 @@ setSchemaTpl("size", {
     options: sizeOption
 });
 
+setSchemaTpl("type", ({ title, name }: { title: string; name: string }) => {
+    return {
+        label: title,
+        name,
+        type: "select",
+        options: typeOption
+    };
+});
+
+setSchemaTpl("showType", {
+    label: "显示类型",
+    name: "showType",
+    type: "select",
+    options: layoutOptions
+});
+
+setSchemaTpl("justifyLayout", (params: any) => {
+    return {
+        label: "水平布局",
+        name: "justify",
+        type: "select",
+        options: horizontalOption,
+        ...params
+    };
+});
+
+setSchemaTpl("alignLayout", (params: any) => {
+    return {
+        label: "垂直布局",
+        name: "align",
+        type: "select",
+        options: verticalOption,
+        ...params
+    };
+});
+
+setSchemaTpl("color", (title: string) => {
+    return {
+        label: title,
+        name: "color",
+        type: "color-picker"
+    };
+});
+
 setSchemaTpl("prefixIcon", {
     label: "前缀图标",
     name: "prefix-icon",
@@ -118,6 +182,23 @@ setSchemaTpl("suffixIcon", {
     label: "后缀图标",
     name: "suffix-icon",
     type: "icon-select"
+});
+
+setSchemaTpl("icon", (title: string) => {
+    return {
+        label: title,
+        name: "icon",
+        type: "icon-select"
+    };
+});
+
+setSchemaTpl("tag", (title: string) => {
+    return {
+        label: title,
+        name: "tag",
+        type: "select",
+        options: tagOptions
+    };
 });
 
 setSchemaTpl("width", (title: string) => {
@@ -170,10 +251,10 @@ setSchemaTpl("dateType", (option: any[]) => {
         name: "dateType",
         type: "select",
         options: option,
-        change: (val: string, data: any) => {
+        onChange: (val: string) => {
             const findItem = option.find((item) => item.value === val);
-            data.format = findItem?.format;
-            data["value-format"] = findItem?.valueFormat;
+            getActiveInfo.value.format = findItem?.format;
+            getActiveInfo.value["value-format"] = findItem?.valueFormat;
         }
     };
 });
@@ -193,8 +274,8 @@ setSchemaTpl("dateValueFormat", {
 setSchemaTpl("labelRemark", {
     label: "标题提示",
     name: "labelRemark",
-    type: "switch",
-    // formType: "dialog",
+    type: "switch-more",
+    formType: "dialog",
     pipeIn: (value: any) => !!value,
     pipeOut: (value: boolean) => {
         if (value) {
@@ -207,8 +288,148 @@ setSchemaTpl("labelRemark", {
             };
         }
         return undefined;
+    },
+    form: {
+        size: "default",
+        layoutType: "row",
+        gutter: 16,
+        children: [
+            {
+                name: "title",
+                type: "input",
+                label: "提示标题",
+                placeholder: "请输入提示标题",
+                span: 12,
+                size: "default"
+            },
+            {
+                name: "placement",
+                type: "select",
+                options: placementPosition,
+                label: "弹出位置",
+                className: "w100",
+                span: 12,
+                size: "default"
+            },
+            {
+                name: "content",
+                type: "textarea",
+                label: "内容",
+                span: 12,
+                size: "default"
+            },
+            {
+                name: "icon",
+                type: "icon-select",
+                label: "图标",
+                span: 12,
+                size: "default"
+            },
+            {
+                name: "trigger",
+                type: "radio",
+                options: triggerOption,
+                label: "触发方式",
+                span: 24,
+                size: "default"
+            }
+        ]
     }
-    // form: {}
+});
+
+setSchemaTpl("validateMax", {
+    label: "最大长度",
+    name: "validateMax",
+    type: "switch-more",
+    formType: "extend",
+    size: "small",
+    pipeIn: (value: any) => !!value,
+    pipeOut: (value: boolean) => {
+        if (value) {
+            return {
+                number: undefined,
+                message: ""
+            };
+        }
+        return undefined;
+    },
+    form: {
+        "label-width": "80px",
+        children: [
+            {
+                name: "number",
+                type: "number",
+                label: "字符数",
+                size: "small"
+            },
+            {
+                name: "message",
+                type: "input",
+                label: "错误提示",
+                size: "small"
+            }
+        ]
+    }
+});
+
+setSchemaTpl("validateMin", {
+    label: "最小长度",
+    name: "validateMin",
+    type: "switch-more",
+    formType: "extend",
+    pipeIn: (value: any) => !!value,
+    pipeOut: (value: boolean) => {
+        if (value) {
+            return {
+                number: undefined,
+                message: ""
+            };
+        }
+        return undefined;
+    },
+    form: {
+        "label-width": "80px",
+        children: [
+            {
+                name: "number",
+                type: "number",
+                label: "字符数",
+                size: "small"
+            },
+            {
+                name: "message",
+                type: "input",
+                label: "错误提示",
+                size: "small"
+            }
+        ]
+    }
+});
+
+setSchemaTpl("validateGroup", (config: any[]) => {
+    return {
+        label: "校验配置",
+        name: "validate",
+        children: [
+            {
+                label: "必填",
+                name: "validateRequired",
+                type: "switch"
+            },
+            {
+                label: "错误提示",
+                name: "validateMessage",
+                type: "input"
+            },
+            ...config,
+            {
+                label: "触发方式",
+                name: "validateTrigger",
+                type: "checkbox",
+                options: ruleTriggerOption
+            }
+        ]
+    };
 });
 
 setSchemaTpl(
@@ -216,7 +437,7 @@ setSchemaTpl(
     (
         config: Array<{
             label: string;
-            children: any[];
+            columns: any[];
         }>
     ) => {
         return {
@@ -224,7 +445,7 @@ setSchemaTpl(
             name: "collapse",
             type: "collapse",
             defaultExpandAll: true,
-            children: config
+            columns: config
         };
     }
 );
@@ -237,7 +458,6 @@ setSchemaTpl("basicGroup", ({ config = [], isFormItem = false }) => {
     return {
         label: "基础配置",
         name: "basic",
-        type: "collapse-item",
         children: [...formItemConfig, ...config]
     };
 });
@@ -246,16 +466,6 @@ setSchemaTpl("statusGroup", (config: any[]) => {
     return {
         label: "状态配置",
         name: "status",
-        type: "collapse-item",
-        children: config
-    };
-});
-
-setSchemaTpl("validateGroup", (config: any[]) => {
-    return {
-        label: "校验配置",
-        name: "validate",
-        type: "collapse-item",
         children: config
     };
 });
@@ -264,7 +474,6 @@ setSchemaTpl("optionsGroup", (config: any[] = []) => {
     return {
         label: "选项",
         name: "options",
-        type: "collapse-item",
         children: [
             // {
             //     label: "数据来源",
