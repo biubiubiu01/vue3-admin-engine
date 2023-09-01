@@ -1,10 +1,10 @@
-import { transfromObject, omit } from "@/utils";
+import { transformObject } from "@/utils";
 
 const renderCode = (config: any) => {
-    const setting = transfromObject(omit(config.props, ["options"]));
+    const { model, options, ...rest } = config;
 
-    return `<el-select v-model="formModel.${config.formItem.prop}" ${setting}>
-        ${renderOption(config.props.options)}
+    return `<el-select v-model="formModel.${model}" ${transformObject(rest)}>
+        ${renderOption(options)}
     </el-select>`;
 };
 

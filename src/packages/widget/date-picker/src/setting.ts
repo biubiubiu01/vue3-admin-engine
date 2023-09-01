@@ -22,7 +22,10 @@ const attrSetting = createAttrSetting([
     ])
 ]);
 
-const styleSetting = createStyleSetting([]);
+const styleSetting = createStyleSetting([
+    getSchemaTpl("class"),
+    getSchemaTpl("collapse", [getSchemaTpl("layoutGroup"), getSchemaTpl("textGroup"), getSchemaTpl("positionGroup"), getSchemaTpl("borderGroup"), getSchemaTpl("sourceCodeGroup")])
+]);
 
 const eventSetting = createEventSetting([]);
 

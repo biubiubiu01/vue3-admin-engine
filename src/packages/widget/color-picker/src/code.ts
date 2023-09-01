@@ -1,7 +1,8 @@
-import { transfromObject } from "@/utils";
+import { transformObject } from "@/utils";
 
 const renderCode = (config: any) => {
-    return `<el-color-picker v-model="formModel.${config.formItem.prop}" ${transfromObject(config.props)}/>`;
+    const { model, ...rest } = config;
+    return `<el-color-picker v-model="formModel.${model}" ${transformObject(rest)}/>`;
 };
 
 export default renderCode;

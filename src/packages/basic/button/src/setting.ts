@@ -11,7 +11,7 @@ const attrSetting = createAttrSetting([
                     type: "input"
                 },
                 getSchemaTpl("icon", "图标"),
-                getSchemaTpl("type", { title: "按钮类型", name: "name" }),
+                getSchemaTpl("type", { title: "按钮类型", name: "buttonType" }),
                 {
                     label: "朴素按钮",
                     name: "plain",
@@ -49,7 +49,10 @@ const attrSetting = createAttrSetting([
     ])
 ]);
 
-const styleSetting = createStyleSetting([]);
+const styleSetting = createStyleSetting([
+    getSchemaTpl("class"),
+    getSchemaTpl("collapse", [getSchemaTpl("layoutGroup"), getSchemaTpl("textGroup"), getSchemaTpl("positionGroup"), getSchemaTpl("borderGroup"), getSchemaTpl("sourceCodeGroup")])
+]);
 
 const eventSetting = createEventSetting([]);
 

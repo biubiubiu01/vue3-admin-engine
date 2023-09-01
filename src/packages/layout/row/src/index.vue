@@ -1,8 +1,8 @@
 <template>
     <el-row :gutter="gutter" :justify="justify" :align="align" :class="{ 'row-editor': !preview }">
         <el-col v-for="(item, index) in children" :key="index" :span="item.span">
-            <drag-group v-if="!preview" :list="item.children" />
-            <render-item v-else :element="item" :data="data" :preview="preview" />
+            <drag-group :list="item.children" v-if="!preview" />
+            <render-item v-for="child in item.children" :key="child.id" :element="child" :data="data" v-else />
         </el-col>
     </el-row>
 </template>

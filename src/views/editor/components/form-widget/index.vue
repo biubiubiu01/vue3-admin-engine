@@ -2,7 +2,7 @@
     <div class="all-container form-widget-container">
         <el-scrollbar view-class="h100">
             <el-form class="h100" :rules="getRules" :model="getActiveInfo">
-                <drag-group :list="getSchemaJson" />
+                <drag-group :list="getSchemaJson" :preview="preview" />
             </el-form>
         </el-scrollbar>
     </div>
@@ -11,6 +11,13 @@
 <script lang="ts" setup>
 import { useFormData } from "@/hooks/useFormData";
 import { useFormRules } from "@/hooks/useFormRules";
+
+const props = defineProps({
+    preview: {
+        type: Boolean,
+        default: false
+    }
+});
 
 const { getActiveInfo, getSchemaJson } = useFormData();
 

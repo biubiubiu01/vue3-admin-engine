@@ -1,4 +1,4 @@
-import { transfromObject } from "@/utils";
+import { transformObject } from "@/utils";
 
 const renderCode = (config: any) => {
     return "";

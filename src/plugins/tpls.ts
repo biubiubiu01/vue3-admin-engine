@@ -1,9 +1,10 @@
 import { sizeOption } from "@/constant/size";
-import { typeOption, layoutOptions } from "@/constant/type";
-import { placementPosition, formPositionOption, horizontalOption, verticalOption } from "@/constant/position";
+import { typeOption, layoutOptions, borderTypeOptions } from "@/constant/type";
+import { placementPosition, formPositionOption, horizontalOption, verticalOption, alignOption, cssPosition } from "@/constant/position";
 import { tagOptions } from "@/constant/tag";
 import { triggerOption, ruleTriggerOption } from "@/constant/trigger";
 import { useFormData } from "@/hooks/useFormData";
+import { addColItem } from "@/packages/layout/row/index";
 
 const { getActiveInfo } = useFormData();
 
@@ -42,7 +43,7 @@ setSchemaTpl("placeholder", {
 setSchemaTpl("formItemLabelWidth", {
     label: "标题宽度",
     name: "label-width",
-    type: "number"
+    type: "input"
 });
 
 setSchemaTpl("formLabelPosition", {
@@ -159,9 +160,16 @@ setSchemaTpl("alignLayout", (params: any) => {
         label: "垂直布局",
         name: "align",
         type: "select",
-        options: verticalOption,
+        options: alignOption,
         ...params
     };
+});
+
+setSchemaTpl("verticalLayout", {
+    label: "垂直布局",
+    name: "align",
+    type: "select",
+    options: verticalOption
 });
 
 setSchemaTpl("color", (title: string) => {
@@ -294,45 +302,58 @@ setSchemaTpl("labelRemark", {
         layoutType: "row",
         gutter: 16,
         children: [
-            {
-                name: "title",
-                type: "input",
-                label: "提示标题",
-                placeholder: "请输入提示标题",
-                span: 12,
-                size: "default"
-            },
-            {
-                name: "placement",
-                type: "select",
-                options: placementPosition,
-                label: "弹出位置",
-                className: "w100",
-                span: 12,
-                size: "default"
-            },
-            {
-                name: "content",
-                type: "textarea",
-                label: "内容",
-                span: 12,
-                size: "default"
-            },
-            {
-                name: "icon",
-                type: "icon-select",
-                label: "图标",
-                span: 12,
-                size: "default"
-            },
-            {
-                name: "trigger",
-                type: "radio",
-                options: triggerOption,
-                label: "触发方式",
+            addColItem({
+                children: [
+                    {
+                        name: "title",
+                        type: "input",
+                        label: "提示标题",
+                        placeholder: "请输入提示标题",
+                        span: 12,
+                        size: "default"
+                    },
+                    {
+                        name: "content",
+                        type: "textarea",
+                        label: "内容",
+                        span: 12,
+                        size: "default"
+                    }
+                ]
+            }),
+            addColItem({
+                children: [
+                    {
+                        name: "placement",
+                        type: "select",
+                        options: placementPosition,
+                        label: "弹出位置",
+                        span: 12,
+                        class: "w100",
+                        size: "default"
+                    },
+                    {
+                        name: "icon",
+                        type: "icon-select",
+                        label: "图标",
+                        span: 12,
+                        size: "default"
+                    }
+                ]
+            }),
+            addColItem({
                 span: 24,
-                size: "default"
-            }
+                children: [
+                    {
+                        name: "trigger",
+                        type: "radio",
+                        options: triggerOption,
+                        label: "触发方式",
+                        span: 24,
+                        size: "default"
+                    }
+                ]
+            })
         ]
     }
 });
@@ -450,6 +471,158 @@ setSchemaTpl(
     }
 );
 
+setSchemaTpl("class", {
+    label: "类名",
+    name: "class",
+    type: "input"
+});
+
+setSchemaTpl("styleWidth", {
+    label: "宽度",
+    name: "style:width",
+    type: "input"
+});
+
+setSchemaTpl("styleHeight", {
+    label: "高度",
+    name: "style:height",
+    type: "input"
+});
+
+setSchemaTpl("styleCommonPosition", [
+    {
+        name: "top",
+        type: "input",
+        label: "top",
+        size: "small"
+    },
+    {
+        name: "right",
+        type: "input",
+        label: "right",
+        size: "small"
+    },
+    {
+        name: "bottom",
+        type: "input",
+        label: "bottom",
+        size: "small"
+    },
+    {
+        name: "left",
+        type: "input",
+        label: "left",
+        size: "small"
+    }
+]);
+
+setSchemaTpl("styleMargin", {
+    label: "外边距",
+    name: "style:margin",
+    type: "switch-more",
+    formType: "extend",
+    pipeIn: (value: any) => !!value,
+    pipeOut: (value: boolean) => {
+        if (value) {
+            return {};
+        }
+        return undefined;
+    },
+    form: {
+        "label-width": "80px",
+        children: getSchemaTpl("styleCommonPosition")
+    }
+});
+
+setSchemaTpl("stylePadding", {
+    label: "内边距",
+    name: "style:padding",
+    type: "switch-more",
+    formType: "extend",
+    pipeIn: (value: any) => !!value,
+    pipeOut: (value: boolean) => {
+        if (value) {
+            return {};
+        }
+        return undefined;
+    },
+    form: {
+        "label-width": "80px",
+        children: getSchemaTpl("styleCommonPosition")
+    }
+});
+
+setSchemaTpl("styleColor", {
+    label: "文字颜色",
+    name: "style:color",
+    type: "color-picker"
+});
+
+setSchemaTpl("styleBgColor", {
+    label: "背景颜色",
+    name: "style:background-color",
+    type: "color-picker"
+});
+
+setSchemaTpl("styleFontSize", {
+    label: "字号",
+    name: "style:font-size",
+    type: "input"
+});
+
+setSchemaTpl("styleLineHeight", {
+    label: "行高",
+    name: "style:line-height",
+    type: "input"
+});
+
+setSchemaTpl("stylePosition", {
+    label: "定位",
+    name: "style:position",
+    type: "select",
+    options: cssPosition
+});
+
+setSchemaTpl("styleZIndex", {
+    label: "层级",
+    name: "style:z-index",
+    type: "number"
+});
+
+setSchemaTpl("styleFontWeight", {
+    label: "字重",
+    name: "style:font-weight",
+    type: "number",
+    min: 100,
+    step: 100,
+    max: 900
+});
+
+setSchemaTpl("styleBorderWidth", {
+    label: "边框",
+    name: "style:border-width",
+    type: "input"
+});
+
+setSchemaTpl("styleBorderStyle", {
+    label: "边框类型",
+    name: "style:border-style",
+    type: "radio",
+    options: borderTypeOptions
+});
+
+setSchemaTpl("styleBorderColor", {
+    label: "边框颜色",
+    name: "style:border-color",
+    type: "color-picker"
+});
+
+setSchemaTpl("styleBorderRadius", {
+    label: "边框圆角",
+    name: "style:border-radius",
+    type: "input"
+});
+
 setSchemaTpl("basicGroup", ({ config = [], isFormItem = false }) => {
     const formItemConfig = [];
     if (isFormItem) {
@@ -500,4 +673,72 @@ setSchemaTpl("optionsGroup", (config: any[] = []) => {
             ...config
         ]
     };
+});
+
+setSchemaTpl("layoutGroup", (config: any[] = []) => {
+    return {
+        label: "布局配置",
+        name: "layout",
+        children: [getSchemaTpl("styleWidth"), getSchemaTpl("styleHeight"), getSchemaTpl("styleMargin"), getSchemaTpl("stylePadding"), ...config]
+    };
+});
+
+setSchemaTpl("textGroup", (config: any[] = []) => {
+    return {
+        label: "基础配置",
+        name: "text",
+        children: [getSchemaTpl("styleFontSize"), getSchemaTpl("styleLineHeight"), getSchemaTpl("styleFontWeight"), getSchemaTpl("styleColor"), getSchemaTpl("styleBgColor"), ...config]
+    };
+});
+
+setSchemaTpl("positionGroup", (config: any[] = []) => {
+    return {
+        label: "位置配置",
+        name: "position",
+        children: [
+            getSchemaTpl("stylePosition"),
+            {
+                label: "top",
+                name: "style:top",
+                type: "input"
+            },
+            {
+                label: "right",
+                name: "style:right",
+                type: "input"
+            },
+            {
+                label: "bottom",
+                name: "style:bottom",
+                type: "input"
+            },
+            {
+                label: "left",
+                name: "style:left",
+                type: "input"
+            },
+            getSchemaTpl("styleZIndex"),
+            ...config
+        ]
+    };
+});
+
+setSchemaTpl("borderGroup", (config: any[] = []) => {
+    return {
+        label: "边框配置",
+        name: "border",
+        children: [getSchemaTpl("styleBorderWidth"), getSchemaTpl("styleBorderStyle"), getSchemaTpl("styleBorderColor"), getSchemaTpl("styleBorderRadius"), ...config]
+    };
+});
+
+setSchemaTpl("sourceCodeGroup", {
+    label: "源码配置",
+    name: "sourceCode",
+    children: [
+        {
+            label: "",
+            name: "sourceStyle",
+            type: "source-control"
+        }
+    ]
 });

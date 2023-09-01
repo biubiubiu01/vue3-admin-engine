@@ -6,7 +6,7 @@
  * @FilePath: \vue3-form-drag\src\utils\common.ts
  *
  */
-import { isObject, isString } from "./is";
+import { isBoolean, isObject, isString } from "./is";
 
 /**
  * 排除掉obj里面的key值
@@ -88,14 +88,56 @@ export function deepMerge<T = any>(src: any = {}, target: any = {}): T {
     return src;
 }
 
-export const transfromObject = (obj: any) => {
+export const transformObject = (obj: any, config: any = {}) => {
+    const defineConfig = { quote: true, connect: "=", split: " " };
+    const options = Object.assign({}, defineConfig, config);
+    const quote = options.quote ? `"` : ``;
+    const { connect, split } = options;
+
     let params = "";
     for (const key in obj) {
         if (isString(obj[key])) {
-            params += `${key} = "${obj[key]}" `;
-        } else {
-            params += `:${key} = ${obj[key]} `;
+            params += `${key}${connect}${quote}${obj[key]}${quote}${split}`;
+        } else if (isObject(obj[key])) {
+            params += `${key}${connect}${quote}${transformObject(obj[key], { quote: false, connect: ":", split: ";" })}${quote}${split}`;
+        } else if (obj[key] || isBoolean(obj[key]) || obj[key] === 0) {
+            params += `:${key}${connect}${quote}${obj[key]}${quote}${split}`;
         }
     }
     return params;
+};
+
+export const transformStyle = (element: any): any => {
+    const elementStyle: any = {};
+
+    const mergeFields = ["margin", "padding"];
+    const inlineStyle = element.sourceStyle?.replace(/[ ]|[\r\n]|#main|{|}/g, "") || "";
+
+    const fields = Object.keys(element).filter((item: string) => item.includes("style:"));
+
+    fields.forEach((item) => {
+        const key = item.split(":")[1];
+        const value = element[item];
+        if (mergeFields.includes(key)) {
+            elementStyle[key] = `${value.top || "0px"} ${value.right || "0px"} ${value.bottom || "0px"} ${value.left || "0px"}`;
+        } else {
+            elementStyle[key] = `${value}`;
+        }
+    });
+
+    if (inlineStyle) {
+        const styleList = inlineStyle.split(";").filter((item: string) => item);
+
+        styleList.forEach((item: string) => {
+            const key = item.split(":")[0];
+            const value = item.split(":")[1];
+            if (mergeFields.includes(key)) {
+                elementStyle[key] = value.split("px").join("px ");
+            } else {
+                elementStyle[key] = value;
+            }
+        });
+    }
+
+    return elementStyle;
 };

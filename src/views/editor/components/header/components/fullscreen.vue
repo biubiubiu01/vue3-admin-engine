@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useFullscreen } from "@vueuse/core";
+import { useFullscreen } from "@/hooks/useFullscreen";
 
 const { toggle: toggleFullScreen, isFullscreen } = useFullscreen();
 </script>

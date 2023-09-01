@@ -6,10 +6,11 @@
  * @FilePath: \vue3-form-drag\src\packages\widget\number\src\code.ts
  *
  */
-import { transfromObject } from "@/utils";
+import { transformObject } from "@/utils";
 
 const renderCode = (config: any) => {
-    return `<el-input-number  v-model="formModel.${config.formItem.prop}" ${transfromObject(config.props)}/>`;
+    const { model, ...rest } = config;
+    return `<el-input-number v-model="formModel.${model}" ${transformObject(rest)}/>`;
 };
 
 export default renderCode;

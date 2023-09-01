@@ -1,12 +1,9 @@
 <template>
-    <form-designer :json="getSchemaJson" />
+    <EditorForm preview />
 </template>
 
 <script lang="ts" setup>
-import formDesigner from "./form-designer.vue";
-import { useFormData } from "@/hooks/useFormData";
-
-const { getSchemaJson } = useFormData();
+import EditorForm from "../editor/index.vue";
 </script>
 
-<style scoped></style>
+<style lang="scss"></style>

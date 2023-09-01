@@ -84,12 +84,12 @@ export default defineComponent({
             const { formType, label } = props;
             return (
                 <div>
-                    <form-item label={label}>
+                    <el-form-item label={label}>
                         <div class="flex-center justify-between w100">
                             <el-switch v-model={switchValue.value} {...context.attrs} />
                             {formType === "dialog" && switchValue.value ? renderDialog() : null}
                         </div>
-                    </form-item>
+                    </el-form-item>
                     {formType === "extend" && switchValue.value ? renderExtend() : null}
                 </div>
             );

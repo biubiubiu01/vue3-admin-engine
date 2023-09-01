@@ -10,7 +10,7 @@
         <div class="editor-header-right">
             <FullScreen />
             <Switch />
-            <el-button-group style="margin: 0 12px">
+            <el-button-group style="margin: 0 12px" v-if="!preview">
                 <el-tooltip effect="dark" content="撤销" placement="bottom">
                     <el-button :disabled="redoDisabled" @click="executeUndo">
                         <base-icon icon="svg-back" />
@@ -23,35 +23,81 @@
                 </el-tooltip>
             </el-button-group>
 
-            <el-button @click="saveSession">保存到本地</el-button>
-            <el-button @click="handleClearJson">重置页面</el-button>
-            <el-button type="primary" @click="handleCreateJSON">生成JSON</el-button>
+            <el-button @click="saveSession" v-if="!preview">保存到本地</el-button>
+            <el-button @click="handleClearJson" v-if="!preview">重置页面</el-button>
+            <el-button type="primary" @click="handleCreateJSON">查看JSON</el-button>
             <el-button type="primary" @click="handleOutputCode">出码</el-button>
-            <el-button type="primary" @click="handlePreview">预览</el-button>
+            <el-button type="primary" @click="handlePreview">{{ preview ? "编辑" : "预览" }}</el-button>
         </div>
+
+        <el-drawer class="drawer-code" v-model="drawerVisible" title="查看JSON(可在线修改)" direction="rtl" size="540px">
+            <code-editor v-model="jsonCode" language="json" height="100%" />
+            <template #footer>
+                <div class="tc">
+                    <el-button type="primary" @click="handleSaveJson">保存</el-button>
+                    <el-button type="primary" @click="handleCopyJson">复制JSON</el-button>
+                    <el-button type="primary" @click="handleExportJson">导出JSON</el-button>
+                </div>
+            </template>
+        </el-drawer>
+
+        <DialogExportCode ref="exportCodeRef" />
     </div>
 </template>
 
 <script lang="ts" setup>
 import FullScreen from "./components/fullscreen.vue";
 import Switch from "./components/switch.vue";
+import DialogExportCode from "./components/dialog-export-code.vue";
 import { useFormData } from "@/hooks/useFormData";
-import { useGennerateCode } from "@/hooks/useGennerateCode";
+import { useGenerateCode } from "@/hooks/useGenerateCode";
 import { useHistory } from "@/hooks/useHistory";
+import { ElMessage } from "element-plus";
+import { useClipboard } from "@vueuse/core";
 
-const { getSchemaJson, saveSession, clearJson } = useFormData();
-const { gennerateCode, outputFile } = useGennerateCode();
+const props = defineProps({
+    preview: {
+        type: Boolean,
+        default: false
+    }
+});
+
+const { copy } = useClipboard();
+const drawerVisible = ref(false);
+const jsonCode = ref("");
+const exportCodeRef = ref();
+
+const { getSchemaJson, saveSession, clearJson, setActive, updateSchema } = useFormData();
+const { generateCode, outputFile } = useGenerateCode();
 const { redoDisabled, undoDisabled, executeRedo, executeUndo, executeRecord } = useHistory();
+const router = useRouter();
 
 const handleCreateJSON = () => {
-    console.log(getSchemaJson);
+    drawerVisible.value = true;
+    jsonCode.value = JSON.stringify(getSchemaJson.value);
+};
+
+const handleSaveJson = () => {
+    try {
+        const schema = JSON.parse(jsonCode.value);
+        updateSchema(schema);
+        drawerVisible.value = false;
+    } catch {
+        ElMessage.error("json格式化错误");
+    }
+};
+
+const handleCopyJson = async () => {
+    await copy(jsonCode.value);
+    ElMessage.success("复制json成功");
+};
+
+const handleExportJson = () => {
+    outputFile(jsonCode.value, "schema.json");
 };
 
 const handleOutputCode = () => {
-    const code = gennerateCode({ schema: getSchemaJson.value });
-    console.log(code);
-
-    // outputFile(code, "form.vue");
+    unref(exportCodeRef).showDialog();
 };
 
 const handleClearJson = () => {
@@ -60,13 +106,27 @@ const handleClearJson = () => {
 };
 
 const handlePreview = () => {
-    saveSession();
-    window.open("/#/preview");
+    if (!props.preview) {
+        setActive("");
+        saveSession(false);
+        router.push("/preview");
+    } else {
+        router.push("/");
+    }
 };
 
 const handleToGitHub = () => {
-    window.open("https://github.com/biubiubiu01/vue3-form-drag");
+    window.open("https://github.com/biubiubiu01/vue3-admin-engine");
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+.drawer-code {
+    .el-drawer__header {
+        margin-bottom: 18px;
+    }
+    .el-drawer__body {
+        padding-top: 10px;
+    }
+}
+</style>

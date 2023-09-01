@@ -1,4 +1,4 @@
-import { registerComponent, createFormWidget, createCustomWidget, createLayoutWidget, createFeedbackWidget, createBasicWidget, createDataWidget } from "@/packages";
+import { registerComponent, createFormWidget, createCustomWidget, createLayoutWidget, createBasicWidget, createDataWidget } from "@/packages";
 
 const BaseFormItem: string[] = [];
 
@@ -7,7 +7,6 @@ export const useWidgetList = () => {
     const formWidgetList = createFormWidget();
     const customWidgetList = createCustomWidget();
     const layoutWidgetList = createLayoutWidget();
-    const feedbackWidgetList = createFeedbackWidget();
     const basicWidgetList = createBasicWidget();
     const dataWidgetList = createDataWidget();
 
@@ -16,8 +15,6 @@ export const useWidgetList = () => {
     const getCustomWidgetList = sortAndFilter(customWidgetList);
 
     const getLayoutWidgetList = sortAndFilter(layoutWidgetList);
-
-    const getFeedbackWidgetList = sortAndFilter(feedbackWidgetList);
 
     const getBasicWidgetList = sortAndFilter(basicWidgetList);
 
@@ -36,7 +33,6 @@ export const useWidgetList = () => {
         getFormWidgetList,
         getCustomWidgetList,
         getLayoutWidgetList,
-        getFeedbackWidgetList,
         getBasicWidgetList,
         getDataWidgetList,
 

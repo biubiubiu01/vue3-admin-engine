@@ -1,12 +1,16 @@
 import { createComponent } from "@/plugins/create";
 import { useNanoid } from "@/hooks/useNanoid";
 
-export const addColItem = () => {
+export const addColItem = (config: any = {}) => {
+    const defaultConfig = {
+        span: 12,
+        children: []
+    };
+
     return {
         id: useNanoid(),
-        span: 12,
         label: "col容器",
-        children: []
+        ...Object.assign(defaultConfig, config)
     };
 };
 

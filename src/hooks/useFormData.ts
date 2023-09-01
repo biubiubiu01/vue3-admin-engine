@@ -3,7 +3,7 @@ import { useNanoid } from "./useNanoid";
 import { ElMessage } from "element-plus";
 import { deepClone } from "@/utils";
 
-const { setItem, getItem } = useStorage();
+const { setItem, getItem } = useStorage("local");
 const sessionKey = "PAGE_SCHEMA";
 
 const state = reactive<any>({

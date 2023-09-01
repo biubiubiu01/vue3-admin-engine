@@ -1,5 +1,5 @@
 <template>
-    <el-form-item :prop="model" :label="label" :class="[{ 'no-label': !label }, className]" :style="style" :size="size">
+    <el-form-item :prop="model" :label="label" :class="[{ 'no-label': !label }]" :style="style" :size="size">
         <template #label="{ label }">
             <div class="flex-row-center">
                 {{ label }}
@@ -29,9 +29,6 @@ const props = defineProps({
     labelRemark: {
         type: Object,
         default: () => {}
-    },
-    className: {
-        type: [String, Object, Array]
     },
     style: {
         type: [String, Object, Array]

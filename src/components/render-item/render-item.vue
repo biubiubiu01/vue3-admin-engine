@@ -1,7 +1,7 @@
 <script lang="tsx">
 import { useWidgetList } from "@/hooks/useWidgetList";
 import { useFormData } from "@/hooks/useFormData";
-import { omit, pick, evalExpressionWithConditionBuilder } from "@/utils";
+import { omit, pick, evalExpressionWithConditionBuilder, transformStyle } from "@/utils";
 import ToolBar from "@/views/editor/components/form-widget/toolbar.vue";
 
 export default defineComponent({
@@ -61,14 +61,24 @@ export default defineComponent({
             // };
         });
 
+        const getElementStyle = computed(() => {
+            const { element } = props;
+
+            if (!element.id) return "";
+
+            return transformStyle(element);
+        });
+
         const getBindValue = computed(() => {
             const { element, data, preview } = props;
+            const styleOmit = Object.keys(element).filter((item: string) => item.includes("style:"));
             return {
                 ...getModelValue.value,
                 data,
                 preview,
+                style: getElementStyle.value,
                 // ...getEventAction.value,
-                ...omit(element, ["type", "model", "pipeIn", "pipeOut", "span", "preview"])
+                ...omit(element, ["type", "model", "pipeIn", "pipeOut", "span", "preview", "sourceStyle", ...styleOmit])
             };
         });
 
@@ -96,7 +106,7 @@ export default defineComponent({
         const renderFormItemComponent = () => {
             const { element } = props;
 
-            const getFormItemBind = { ...pick(element, ["label", "labelRemark", "model", "className", "style", "label-width", "size"]) };
+            const getFormItemBind = { ...pick(element, ["label", "labelRemark", "model", "className", "label-width", "size"]) };
 
             return <form-item {...getFormItemBind}>{renderComponent()}</form-item>;
         };

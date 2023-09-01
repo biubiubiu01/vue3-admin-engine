@@ -8,7 +8,7 @@
 
 import { useWidgetList } from "@/hooks/useWidgetList";
 
-const { getFormWidgetList, getCustomWidgetList, getLayoutWidgetList, getDataWidgetList, getFeedbackWidgetList, getBasicWidgetList } = useWidgetList();
+const { getFormWidgetList, getCustomWidgetList, getLayoutWidgetList, getDataWidgetList, getBasicWidgetList } = useWidgetList();
 
 export const basicComponents = [
     {
@@ -16,6 +16,12 @@ export const basicComponents = [
         type: "form",
         icon: "svg-form",
         children: getFormWidgetList
+    },
+    {
+        title: "自定义组件",
+        type: "custom",
+        icon: "svg-custom",
+        children: getCustomWidgetList
     },
     {
         title: "布局容器",
@@ -34,17 +40,5 @@ export const basicComponents = [
         type: "basic",
         icon: "svg-basic",
         children: getBasicWidgetList
-    },
-    {
-        title: "反馈组件",
-        type: "feedback",
-        icon: "svg-feedback",
-        children: getFeedbackWidgetList
-    },
-    {
-        title: "自定义组件",
-        type: "custom",
-        icon: "svg-custom",
-        children: getCustomWidgetList
     }
 ];

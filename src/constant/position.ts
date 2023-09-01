@@ -17,6 +17,29 @@ export const positionOption = [
     }
 ];
 
+export const cssPosition = [
+    {
+        label: "static",
+        value: "static"
+    },
+    {
+        label: "relative",
+        value: "relative"
+    },
+    {
+        label: "absolute",
+        value: "absolute"
+    },
+    {
+        label: "fixed",
+        value: "fixed"
+    },
+    {
+        label: "sticky",
+        value: "sticky"
+    }
+];
+
 export const basicPositionOption = [
     {
         label: "居左",
@@ -55,6 +78,21 @@ export const verticalOption = [
     {
         label: "bottom",
         value: "bottom"
+    }
+];
+
+export const alignOption = [
+    {
+        label: "start",
+        value: "start"
+    },
+    {
+        label: "center",
+        value: "center"
+    },
+    {
+        label: "end",
+        value: "end"
     }
 ];
 

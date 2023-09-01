@@ -46,11 +46,6 @@ export const createLayoutWidget = () => {
     return Object.values(modules);
 };
 
-export const createFeedbackWidget = () => {
-    const modules: any = import.meta.glob("./feedback/**/index.ts", { eager: true, import: "default" });
-    return Object.values(modules);
-};
-
 export const createBasicWidget = () => {
     const modules: any = import.meta.glob("./basic/**/index.ts", { eager: true, import: "default" });
     return Object.values(modules);

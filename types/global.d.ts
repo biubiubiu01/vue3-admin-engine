@@ -5,3 +5,7 @@ declare module "*.vue" {
 }
 
 declare module "element-plus/dist/locale/zh-cn.mjs";
+
+type TExportType = "vue2" | "vue3" | "html";
+
+type TSchemaList = any[];

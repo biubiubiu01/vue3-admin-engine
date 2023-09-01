@@ -6,17 +6,18 @@
  * @FilePath: \vue3-form-drag\src\packages\widget\radio\src\code.ts
  *
  */
-import { transfromObject, omit } from "@/utils";
+import { transformObject, omit } from "@/utils";
 
 const renderCode = (config: any) => {
-    return `<el-radio-group v-model="formModel.${config.formItem.prop}">
-         ${renderRadio(config.props)}
+    const { model, ...rest } = config;
+    return `<el-radio-group v-model="formModel.${model}">
+         ${renderRadio(rest)}
     </el-radio-group>`;
 };
 
 const renderRadio = (props: any) => {
     const raidoTag = props.shape === "button" ? "el-radio-button" : "el-radio";
-    const config = transfromObject(omit(props, ["shape", "options"]));
+    const config = transformObject(omit(props, ["shape", "options"]));
     return props.options.reduce((t: string, c: any) => {
         return (t += `<${raidoTag} label=${c.value} ${config}>${c.label}</${raidoTag}>\n`);
     }, "");
