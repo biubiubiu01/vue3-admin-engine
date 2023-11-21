@@ -5,6 +5,18 @@ export default createComponent({
 
     componentName: "button",
 
+    scaffold: {
+        buttonLabel: "按钮"
+    },
+
+    events: [
+        {
+            event: "click",
+            params: "event",
+            description: "点击事件"
+        }
+    ],
+
     title: "按钮",
 
     icon: "svg-button",

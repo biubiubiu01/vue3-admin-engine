@@ -17,6 +17,21 @@ export const positionOption = [
     }
 ];
 
+export const tableFixedOption = [
+    {
+        label: "居左",
+        value: "left"
+    },
+    {
+        label: "默认",
+        value: ""
+    },
+    {
+        label: "居右",
+        value: "right"
+    }
+];
+
 export const cssPosition = [
     {
         label: "static",
@@ -44,6 +59,21 @@ export const basicPositionOption = [
     {
         label: "居左",
         value: "left"
+    },
+    {
+        label: "居右",
+        value: "right"
+    }
+];
+
+export const tablePositionOption = [
+    {
+        label: "居左",
+        value: "left"
+    },
+    {
+        label: "居中",
+        value: "center"
     },
     {
         label: "居右",

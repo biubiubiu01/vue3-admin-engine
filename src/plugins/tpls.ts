@@ -59,6 +59,118 @@ setSchemaTpl("formSuffix", {
     type: "switch"
 });
 
+setSchemaTpl("height", {
+    label: "高度",
+    name: "height",
+    type: "input"
+});
+
+setSchemaTpl("maxHeight", {
+    label: "最大高度",
+    name: "max-height",
+    type: "input"
+});
+
+setSchemaTpl("stripe", {
+    label: "斑马纹",
+    name: "stripe",
+    type: "switch"
+});
+
+setSchemaTpl("fit", {
+    label: "自适应宽度",
+    name: "fit",
+    type: "switch"
+});
+
+setSchemaTpl("showHeader", {
+    label: "显示表头",
+    name: "show-header",
+    type: "switch"
+});
+
+setSchemaTpl("tableLayout", {
+    label: "表格布局",
+    name: "table-layout",
+    type: "radio",
+    options: [
+        { label: "自适应", value: "fixed" },
+        { label: "紧凑", value: "auto" }
+    ]
+});
+
+setSchemaTpl("summaryGroup", {
+    label: "显示合计",
+    name: "summary-group",
+    type: "switch-more",
+    formType: "extend",
+    pipeIn: (value: any) => value?.["show-summary"],
+    pipeOut: (value: boolean) => {
+        if (value) {
+            return {
+                "show-summary": true,
+                "sum-text": "合计"
+            };
+        }
+        return {
+            "show-summary": false
+        };
+    },
+    form: {
+        "label-width": "80px",
+        children: [
+            {
+                name: "sum-text",
+                type: "input",
+                label: "首行文本",
+                size: "small"
+            }
+        ]
+    }
+});
+
+setSchemaTpl("highCurrentRow", {
+    label: "高亮当前行",
+    name: "highlight-current-row",
+    type: "switch"
+});
+
+setSchemaTpl("emptyText", {
+    label: "空文本",
+    name: "empty-text",
+    type: "input"
+});
+
+setSchemaTpl("scrollbarOn", {
+    label: "滚动条长显",
+    name: "scrollbar-always-on",
+    type: "switch"
+});
+
+setSchemaTpl("showOverflowTooltip", {
+    label: "文字悬浮",
+    name: "show-overflow-tooltip",
+    type: "switch"
+});
+
+setSchemaTpl("tableIndex", {
+    label: "显示序号",
+    name: "show-index",
+    type: "switch"
+});
+
+setSchemaTpl("tableCheck", {
+    label: "显示勾选",
+    name: "show-selection",
+    type: "switch"
+});
+
+setSchemaTpl("border", {
+    label: "边框",
+    name: "border",
+    type: "switch"
+});
+
 setSchemaTpl("maxlength", {
     label: "最大长度",
     name: "maxlength",
@@ -142,7 +254,12 @@ setSchemaTpl("showType", {
     label: "显示类型",
     name: "showType",
     type: "select",
-    options: layoutOptions
+    clearable: true,
+    options: layoutOptions,
+    onChange: () => {
+        getActiveInfo.value.justify = "";
+        getActiveInfo.value.align = "";
+    }
 });
 
 setSchemaTpl("justifyLayout", (params: any) => {
@@ -675,6 +792,67 @@ setSchemaTpl("optionsGroup", (config: any[] = []) => {
     };
 });
 
+setSchemaTpl("dynamicOptionGroup", (config: any[] = []) => {
+    return {
+        label: "选项",
+        name: "dynamicOptionGroup",
+        children: [
+            {
+                label: "显示字段",
+                name: "labelKey",
+                type: "input"
+            },
+            {
+                label: "值字段",
+                name: "valueKey",
+                type: "input"
+            },
+            {
+                label: "数据来源",
+                name: "option-source",
+                type: "radio",
+                defaultValue: 1,
+                options: [
+                    {
+                        label: "静态数据",
+                        value: 1
+                    },
+                    {
+                        label: "外部接口",
+                        value: 2
+                    }
+                ]
+            },
+            {
+                label: "",
+                name: "options",
+                type: "option-control",
+                visibleOn: "data['option-source']===1"
+            },
+            {
+                label: "接口",
+                name: "source",
+                type: "http-control",
+                visibleOn: "data['option-source']===2"
+            },
+            {
+                label: "初始化请求",
+                name: "immediate",
+                type: "switch",
+                visibleOn: "data['option-source']===2"
+            },
+            {
+                label: "总是请求",
+                name: "alwaysLoad",
+                type: "switch",
+                visibleOn: "data['option-source']===2"
+            },
+
+            ...config
+        ]
+    };
+});
+
 setSchemaTpl("layoutGroup", (config: any[] = []) => {
     return {
         label: "布局配置",
@@ -741,4 +919,23 @@ setSchemaTpl("sourceCodeGroup", {
             type: "source-control"
         }
     ]
+});
+
+setSchemaTpl("columnGroup", (config: any[] = []) => {
+    return {
+        label: "列配置",
+        name: "tableColumn",
+        children: [
+            {
+                label: "",
+                name: "columns",
+                type: "column-control"
+            }
+        ]
+    };
+});
+
+setSchemaTpl("event", {
+    name: "onEvent",
+    type: "event-config"
 });

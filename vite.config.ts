@@ -76,7 +76,8 @@ export default (): UserConfig => {
         server: {
             host: "0.0.0.0",
             port: 4000, // 服务端口号
-            open: true // 服务启动时是否自动打开浏览器
+            open: true, // 服务启动时是否自动打开浏览器
+            proxy: {}
         },
         build: {
             reportCompressedSize: false,

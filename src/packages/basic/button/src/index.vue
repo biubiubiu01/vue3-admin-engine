@@ -1,12 +1,12 @@
 <template>
-    <el-button :type="buttonType" v-bind="$attrs" @click="handleClick">
-        {{ label }}
+    <el-button :type="buttonType" @click="handleClick" v-bind="$attrs">
+        {{ buttonLabel }}
     </el-button>
 </template>
 
 <script lang="ts" setup>
 const props = defineProps({
-    label: {
+    buttonLabel: {
         type: String,
         default: "按钮"
     },

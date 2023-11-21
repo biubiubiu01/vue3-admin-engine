@@ -1,8 +1,8 @@
-import { transformObject, omit } from "@/utils";
+import { transformObject, transformEvent } from "@/utils";
 
 const renderCode = (config: any) => {
-    const props = omit(config.props, "title");
-    return `<el-button ${transformObject(props)}>${config.props.title}</el-button>`;
+    const { model, parentModel, buttonLabel = "按钮", actionType, buttonType, onEvent, ...rest } = config;
+    return `<el-button ${transformObject({ type: buttonType, ...rest })} ${transformEvent(onEvent)}>${buttonLabel}</el-button>`;
 };
 
 export default renderCode;

@@ -7,8 +7,8 @@
         </el-tabs>
         <template #footer>
             <div class="tc">
-                <el-button type="primary">复制代码</el-button>
-                <el-button type="primary">导出代码（根据当前tab）</el-button>
+                <el-button type="primary" @click="handleCopyCode">复制代码</el-button>
+                <el-button type="primary" @click="handleExportCode">导出代码（根据当前tab）</el-button>
             </div>
         </template>
     </el-dialog>
@@ -17,6 +17,9 @@
 <script lang="ts" setup>
 import { useFormData } from "@/hooks/useFormData";
 import { useGenerateCode } from "@/hooks/useGenerateCode";
+import { ElMessage } from "element-plus";
+import { useClipboard } from "@vueuse/core";
+
 const tabList = readonly([
     {
         label: "vue2",
@@ -37,6 +40,7 @@ const activeTab = ref<TExportType>("vue2");
 
 const jsonCode = ref<any>({});
 
+const { copy } = useClipboard();
 const { getSchemaJson } = useFormData();
 const { generateCode, outputFile } = useGenerateCode();
 
@@ -50,6 +54,16 @@ const getCode = () => {
     if (!unref(jsonCode)[activeTab.value]) {
         unref(jsonCode)[activeTab.value] = generateCode(getSchemaJson.value, activeTab.value);
     }
+};
+
+const handleCopyCode = async () => {
+    await copy(jsonCode.value[unref(activeTab)]);
+    ElMessage.success("复制代码成功");
+};
+
+const handleExportCode = () => {
+    const fileName = activeTab.value === "html" ? "form.html" : "form.vue";
+    outputFile(unref(jsonCode)[activeTab.value], fileName);
 };
 
 const handleChangeTab = () => {

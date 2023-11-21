@@ -1,7 +1,7 @@
 <template>
-    <div class=""></div>
+    <div class="template-widget"></div>
 </template>
 
-<script setup></script>
+<script lang="ts" setup></script>
 
-<style scoped></style>
+<style lang="scss" scoped></style>

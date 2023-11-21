@@ -14,3 +14,25 @@ export const evalExpressionWithConditionBuilder = (express: any, data: object): 
     }
     return fn(data);
 };
+
+export const transformStringToFunction = (str: string) => {
+    if (typeof str !== "string") return str;
+
+    let fn;
+
+    const fnBody = `return function(){
+        const self=this;
+        try {
+            return (${str}).apply(self, arguments);
+        } catch(e) {
+            console.log(e)
+        }
+    }`;
+
+    try {
+        fn = new Function(fnBody)();
+    } catch (e) {
+        console.log(e);
+    }
+    return fn;
+};

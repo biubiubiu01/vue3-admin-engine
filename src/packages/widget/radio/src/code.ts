@@ -6,11 +6,11 @@
  * @FilePath: \vue3-form-drag\src\packages\widget\radio\src\code.ts
  *
  */
-import { transformObject, omit } from "@/utils";
+import { transformObject, omit, transformEvent } from "@/utils";
 
 const renderCode = (config: any) => {
-    const { model, ...rest } = config;
-    return `<el-radio-group v-model="formModel.${model}">
+    const { model, parentModel, onEvent, ...rest } = config;
+    return `<el-radio-group v-model="${parentModel}.${model}" ${transformEvent(onEvent)}>
          ${renderRadio(rest)}
     </el-radio-group>`;
 };

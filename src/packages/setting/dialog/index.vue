@@ -66,12 +66,12 @@ const props = defineProps({
             {
                 type: "button",
                 actionType: "cancel",
-                label: "取消"
+                buttonLabel: "取消"
             },
             {
                 type: "button",
                 actionType: "confirm",
-                label: "确认",
+                buttonLabel: "确认",
                 buttonType: "primary"
             }
         ]

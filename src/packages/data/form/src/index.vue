@@ -87,6 +87,16 @@ const formGutter = computed(() => {
     padding: 0 v-bind(formGutter);
     position: relative;
     z-index: 22;
+    &.el-form--inline.form-editor {
+        .drag-editor {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            :deep(.el-form-item) {
+                margin-top: 0;
+            }
+        }
+    }
 
     &.form-editor {
         background-color: var(--el-border-color-extra-light);

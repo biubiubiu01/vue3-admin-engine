@@ -7,7 +7,7 @@ const attrSetting = createAttrSetting([
             config: [
                 {
                     label: "按钮内容",
-                    name: "label",
+                    name: "buttonLabel",
                     type: "input"
                 },
                 getSchemaTpl("icon", "图标"),
@@ -54,6 +54,6 @@ const styleSetting = createStyleSetting([
     getSchemaTpl("collapse", [getSchemaTpl("layoutGroup"), getSchemaTpl("textGroup"), getSchemaTpl("positionGroup"), getSchemaTpl("borderGroup"), getSchemaTpl("sourceCodeGroup")])
 ]);
 
-const eventSetting = createEventSetting([]);
+const eventSetting = createEventSetting([getSchemaTpl("event")]);
 
 export default attrSetting.concat(styleSetting).concat(eventSetting);

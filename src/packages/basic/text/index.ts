@@ -5,6 +5,18 @@ export default createComponent({
 
     componentName: "text",
 
+    scaffold: {
+        textLabel: "文本"
+    },
+
+    events: [
+        {
+            event: "click",
+            params: "event",
+            description: "点击事件"
+        }
+    ],
+
     title: "文本",
 
     icon: "svg-text",

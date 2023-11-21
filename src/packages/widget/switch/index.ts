@@ -9,5 +9,13 @@ export default createComponent({
 
     icon: "svg-switch",
 
+    events: [
+        {
+            event: "change",
+            params: "value",
+            description: "绑定值变化时触发的事件"
+        }
+    ],
+
     description: "switch开关"
 });

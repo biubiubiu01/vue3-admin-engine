@@ -38,6 +38,7 @@ const props = defineProps({
 
 const getLabelRemark = computed(() => {
     const { labelRemark } = props;
+
     if (isObject(labelRemark)) {
         return labelRemark;
     }

@@ -22,5 +22,13 @@ export default createComponent({
         ]
     },
 
+    events: [
+        {
+            event: "change",
+            params: "value",
+            description: "绑定值变化时触发的事件"
+        }
+    ],
+
     description: "checkbox多选组件"
 });

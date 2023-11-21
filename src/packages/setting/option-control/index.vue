@@ -10,7 +10,7 @@
                         <el-input v-model="element.value" />
                     </div>
                     <div class="group-item flex-row-center justify-end" style="width: 70px">
-                        <base-icon icon="delete" class="mr5 pointer icon icon-delete" :size="16" @click="handleDeleteRow(index)" />
+                        <base-icon icon="delete" class="mr5 pointer icon" :size="16" @click="handleDeleteRow(index)" />
                         <base-icon icon="rank" class="move pointer icon" :size="16" />
                     </div>
                 </div>
@@ -53,10 +53,6 @@ const handleDeleteRow = (index: number) => {
     color: var(--el-color-primary);
 }
 .icon {
-    color: var(--el-color-primary);
     font-weight: bold;
-    &.icon-delete {
-        color: var(--el-color-danger);
-    }
 }
 </style>

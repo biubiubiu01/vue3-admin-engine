@@ -1,7 +1,7 @@
 import { createComponent } from "@/plugins/create";
 
 export default createComponent({
-    sort: 17,
+    sort: 18,
 
     componentName: "icon-select",
 

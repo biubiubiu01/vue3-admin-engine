@@ -5,6 +5,10 @@ export default createComponent({
 
     componentName: "link",
 
+    scaffold: {
+        linkLabel: "文字链接"
+    },
+
     title: "文字链接",
 
     icon: "svg-link",

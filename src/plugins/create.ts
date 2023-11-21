@@ -7,7 +7,8 @@ export const createComponent = (option: any) => {
     }
     Object.assign(componentOption.scaffold, {
         type: option.componentName,
-        label: option.title
+        label: option.title,
+        onEvent: option.onEvent || []
     });
     return componentOption;
 };

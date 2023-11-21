@@ -1,7 +1,7 @@
 <script lang="tsx">
 import { useWidgetList } from "@/hooks/useWidgetList";
 import { useFormData } from "@/hooks/useFormData";
-import { omit, pick, evalExpressionWithConditionBuilder, transformStyle } from "@/utils";
+import { omit, pick, evalExpressionWithConditionBuilder, transformStringToFunction, transformStyle } from "@/utils";
 import ToolBar from "@/views/editor/components/form-widget/toolbar.vue";
 
 export default defineComponent({
@@ -25,11 +25,14 @@ export default defineComponent({
         const { getComponent, isInlineComp, isFormComp } = useWidgetList();
         const { getActiveId } = useFormData();
 
+        const formModel = reactive<any>({});
+
         const getModelValue = computed(() => {
-            const { element, data } = props;
+            const { element, data, preview } = props;
 
             if (element.name || element.id) {
-                let value = data[element.name];
+                const isPreview = preview && element.model;
+                let value = isPreview ? formModel[element.model] : data[element.name];
                 if (typeof element.pipeIn === "function") {
                     value = element.pipeIn?.(value);
                 }
@@ -43,7 +46,12 @@ export default defineComponent({
                             delete data[element.name];
                             return;
                         }
-                        data[element.name] = val;
+                        if (element.name) {
+                            data[element.name] = val;
+                        }
+                        if (isPreview) {
+                            formModel[element.model] = val;
+                        }
                     }
                 };
             }
@@ -51,14 +59,15 @@ export default defineComponent({
         });
 
         const getEventAction = computed(() => {
-            // const { element } = props;
-            // return {
-            //     onChange: (val: any) => {
-            //         if (typeof element.change === "function") {
-            //             element.change?.(val, getActiveInfo.value);
-            //         }
-            //     }
-            // };
+            const { element } = props;
+            const eventObj: any = {};
+            if (!element.onEvent) return eventObj;
+            element.onEvent.forEach((item: any) => {
+                const event = item.event[0].toUpperCase() + item.event.substr(1);
+                eventObj[`on${event}`] = transformStringToFunction(`function ${item.eventName}(${item.params}){${item.eventCode}}`);
+            });
+
+            return eventObj;
         });
 
         const getElementStyle = computed(() => {
@@ -77,8 +86,8 @@ export default defineComponent({
                 data,
                 preview,
                 style: getElementStyle.value,
-                // ...getEventAction.value,
-                ...omit(element, ["type", "model", "pipeIn", "pipeOut", "span", "preview", "sourceStyle", ...styleOmit])
+                ...getEventAction.value,
+                ...omit(element, ["type", "model", "pipeIn", "pipeOut", "span", "preview", "sourceStyle", "rules", ...styleOmit])
             };
         });
 

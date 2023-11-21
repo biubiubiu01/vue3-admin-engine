@@ -35,9 +35,6 @@ const props = defineProps({
     children: {
         type: Array as PropType<any[]>,
         default: () => []
-    },
-    colNumber: {
-        type: Number
     }
 });
 </script>

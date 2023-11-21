@@ -7,7 +7,7 @@ const attrSetting = createAttrSetting([
             config: [
                 {
                     label: "链接内容",
-                    name: "label",
+                    name: "linkLabel",
                     type: "input"
                 },
                 getSchemaTpl("icon", "链接图标"),

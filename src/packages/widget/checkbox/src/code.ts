@@ -1,8 +1,8 @@
-import { transformObject, omit } from "@/utils";
+import { transformObject, transformEvent, omit } from "@/utils";
 
 const renderCode = (config: any) => {
-    const { model, ...rest } = config;
-    return `<el-checkbox-group v-model="formModel.${model}">
+    const { model, parentModel, onEvent, ...rest } = config;
+    return `<el-checkbox-group v-model="${parentModel}.${model}" ${transformEvent(onEvent)}>
          ${renderCheckbox(rest)}
     </el-checkbox-group>`;
 };

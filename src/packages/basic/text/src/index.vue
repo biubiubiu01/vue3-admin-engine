@@ -1,13 +1,13 @@
 <template>
     <el-text :type="textType" v-bind="$attrs">
         <base-icon :icon="icon" style="margin-right: 3px" />
-        {{ label }}
+        {{ textLabel }}
     </el-text>
 </template>
 
 <script lang="ts" setup>
 const props = defineProps({
-    label: {
+    textLabel: {
         type: String,
         default: "文字链接"
     },

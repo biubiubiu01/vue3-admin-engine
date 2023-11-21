@@ -12,6 +12,14 @@ export default createComponent({
         tag: "div"
     },
 
+    events: [
+        {
+            event: "click",
+            params: "event",
+            description: "点击事件"
+        }
+    ],
+
     icon: "svg-container",
 
     description: "容器组件"

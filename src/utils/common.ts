@@ -6,7 +6,7 @@
  * @FilePath: \vue3-form-drag\src\utils\common.ts
  *
  */
-import { isBoolean, isObject, isString } from "./is";
+import { isArray, isBoolean, isObject, isString } from "./is";
 
 /**
  * 排除掉obj里面的key值
@@ -140,4 +140,39 @@ export const transformStyle = (element: any): any => {
     }
 
     return elementStyle;
+};
+
+export const transformEvent = (events: any[]) => {
+    return events.map((item) => `@${item.event}=${item.eventName}`).join(" ");
+};
+
+type Key = string | number;
+
+export const getValue = (obj: Record<Key, any>, path: Array<Key> | string, defaultValue?: any): any => {
+    const pathArr: Array<Key> = Array.isArray(path) ? path : path.toString().split(/[.[\]]/);
+    let result: any = obj;
+
+    for (const key of pathArr) {
+        result = result?.[key];
+        if (result === undefined) {
+            return defaultValue;
+        }
+    }
+
+    return result ?? defaultValue;
+};
+
+export const setValue = (obj: Record<Key, any>, path: Array<Key> | string, value: any): void => {
+    const pathArr: Array<Key> = Array.isArray(path) ? path : path.toString().split(/[.[\]]/);
+    const lastKey: Key = pathArr.pop()!; // 取出最后一个键
+
+    let target: any = obj;
+    for (const key of pathArr) {
+        if (!target[key] || typeof target[key] !== "object") {
+            target[key] = {};
+        }
+        target = target[key];
+    }
+
+    target[lastKey] = value;
 };

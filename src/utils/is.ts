@@ -6,4 +6,9 @@ export const isUndefined = (val: any): val is undefined => typeof val === "undef
 export const isString = (val: unknown): val is string => typeof val === "string";
 export const isObject = (val: any): val is object => toString.call(val) === "[object Object]";
 export const isArray = (val: any): val is object => toString.call(val) === "[object Array]";
-export const isEmpty = (val: any): val is boolean => !val && val !== 0;
+export const isEmpty = (val: any): val is boolean => {
+    if (Array.isArray(val)) {
+        return val.length === 0;
+    }
+    return !val && val !== 0;
+};

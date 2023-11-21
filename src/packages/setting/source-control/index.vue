@@ -1,7 +1,7 @@
 <template>
     <el-popover placement="top-start" title="样式源码" :width="500" trigger="click" @show="handleShow">
         <template #reference>
-            <el-button class="w100" size="default"> <base-icon icon="edit" class="mr5" />编辑样式源码 </el-button>
+            <el-button class="w100" size="default"> <base-icon icon="edit" class="mr5" />编辑行内样式源码 </el-button>
         </template>
         <code-editor v-model="code" height="400px" />
     </el-popover>

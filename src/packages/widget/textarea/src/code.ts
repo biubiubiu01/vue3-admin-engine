@@ -6,11 +6,11 @@
  * @FilePath: \vue3-form-drag\src\packages\widget\textarea\src\code.ts
  *
  */
-import { transformObject } from "@/utils";
+import { transformObject, transformEvent } from "@/utils";
 
 const renderCode = (config: any) => {
-    const { model, ...rest } = config;
-    return `<el-input type="textarea" v-model="formModel.${model}" ${transformObject(rest)}/>`;
+    const { model, parentModel, onEvent, ...rest } = config;
+    return `<el-input type="textarea" v-model="${parentModel}.${model}"  ${transformObject(rest)} ${transformEvent(onEvent)}/>`;
 };
 
 export default renderCode;

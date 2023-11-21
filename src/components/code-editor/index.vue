@@ -59,6 +59,9 @@ const props = defineProps({
         type: Boolean,
         default: true
     },
+    theme: {
+        type: String as PropType<"vs-dark" | "vs">
+    },
     options: {
         type: Object,
         default() {
@@ -98,6 +101,7 @@ onMounted(() => {
 });
 
 const theme = computed(() => {
+    if (props.theme) return props.theme;
     return unref(isDark) ? "vs-dark" : "vs";
 });
 

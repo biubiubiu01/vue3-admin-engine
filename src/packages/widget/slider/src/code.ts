@@ -6,11 +6,11 @@
  * @FilePath: \vue3-form-drag\src\packages\widget\slider\src\code.ts
  *
  */
-import { transformObject } from "@/utils";
+import { transformObject, transformEvent } from "@/utils";
 
 const renderCode = (config: any) => {
-    const { model, ...rest } = config;
-    return `<el-slider v-model="formModel.${model}" ${transformObject(rest)}/>`;
+    const { model, parentModel, onEvent, ...rest } = config;
+    return `<el-slider v-model="${parentModel}.${model}" ${transformObject(rest)} ${transformEvent(onEvent)}/>`;
 };
 
 export default renderCode;

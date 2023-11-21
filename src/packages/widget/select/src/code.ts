@@ -1,9 +1,9 @@
-import { transformObject } from "@/utils";
+import { transformObject, transformEvent } from "@/utils";
 
 const renderCode = (config: any) => {
-    const { model, options, ...rest } = config;
+    const { model, options, parentModel, onEvent, ...rest } = config;
 
-    return `<el-select v-model="formModel.${model}" ${transformObject(rest)}>
+    return `<el-select v-model="${parentModel}.${model}" ${transformObject(rest)} ${transformEvent(onEvent)}>
         ${renderOption(options)}
     </el-select>`;
 };

@@ -1,5 +1,5 @@
 <template>
-    <el-select v-model="selectValue" v-bind="$attrs">
+    <el-select v-model="selectValue" v-bind="$attrs" :multiple="multiple" :key="multiple">
         <el-option v-for="item in filterOptions" :key="item.value" :label="item.label" :value="item.value" />
     </el-select>
 </template>
@@ -19,7 +19,8 @@ const props = defineProps({
     defaultValue: {
         type: [Array, Object, String, Number],
         default: ""
-    }
+    },
+    multiple: Boolean
 });
 
 const emit = defineEmits(["update:modelValue"]);

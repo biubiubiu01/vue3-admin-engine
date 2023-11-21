@@ -1,7 +1,7 @@
 <template>
     <div class="all-container form-widget-container">
         <el-scrollbar view-class="h100">
-            <el-form class="h100" :rules="getRules" :model="getActiveInfo">
+            <el-form class="h100" :rules="getRules" :model="formModel">
                 <drag-group :list="getSchemaJson" :preview="preview" />
             </el-form>
         </el-scrollbar>
@@ -18,10 +18,11 @@ const props = defineProps({
         default: false
     }
 });
+const formModel = ref({});
 
-const { getActiveInfo, getSchemaJson } = useFormData();
+const { getSchemaJson } = useFormData();
 
 const { getRules } = useFormRules(getSchemaJson.value);
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped></style>
