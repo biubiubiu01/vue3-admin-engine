@@ -31,4 +31,4 @@ export default createComponent({
     ],
 
     description: "checkbox多选组件"
-});
+} as ComponentConfig);

@@ -17,28 +17,35 @@
 <script lang="ts" setup>
 import { useFormData } from "@/hooks/useFormData";
 import { useGenerateCode } from "@/hooks/useGenerateCode";
+import { LanguageEnum } from "@/enums/languageEnum";
 import { ElMessage } from "element-plus";
 import { useClipboard } from "@vueuse/core";
 
 const tabList = readonly([
     {
-        label: "vue2",
+        label: LanguageEnum.VUE2,
         value: "vue2"
     },
     {
-        label: "vue3",
+        label: LanguageEnum.VUE3,
         value: "vue3"
     },
     {
-        label: "html",
+        label: LanguageEnum.HTML,
         value: "html"
     }
 ]);
 
-const dialogVisible = ref(false);
-const activeTab = ref<TExportType>("vue2");
+interface JsonCode {
+    vue2?: string;
+    vue3?: string;
+    html?: string;
+}
 
-const jsonCode = ref<any>({});
+const dialogVisible = ref(false);
+const activeTab = ref<LanguageType>(LanguageEnum.VUE2);
+
+const jsonCode = ref<JsonCode>({});
 
 const { copy } = useClipboard();
 const { getSchemaJson } = useFormData();
@@ -57,13 +64,13 @@ const getCode = () => {
 };
 
 const handleCopyCode = async () => {
-    await copy(jsonCode.value[unref(activeTab)]);
+    await copy(jsonCode.value[unref(activeTab)] as string);
     ElMessage.success("复制代码成功");
 };
 
 const handleExportCode = () => {
     const fileName = activeTab.value === "html" ? "form.html" : "form.vue";
-    outputFile(unref(jsonCode)[activeTab.value], fileName);
+    outputFile(unref(jsonCode)[activeTab.value] as string, fileName);
 };
 
 const handleChangeTab = () => {

@@ -12,6 +12,8 @@ export default createComponent({
         tag: "div"
     },
 
+    isWrapper: true,
+
     events: [
         {
             event: "click",

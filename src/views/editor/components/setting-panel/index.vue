@@ -12,9 +12,7 @@
                         <el-form-item label="组件类型">
                             <el-tag> {{ getActiveInfo.type }}</el-tag>
                         </el-form-item>
-                        <div v-for="item in tab.children" :key="item.name">
-                            <render-item :element="item" :data="getActiveInfo" />
-                        </div>
+                        <render-list :schema="tab.children" :data="getActiveInfo" type="setting" />
                     </el-form>
                 </el-scrollbar>
             </el-tab-pane>
@@ -24,10 +22,9 @@
 
 <script lang="ts" setup>
 import { useFormData } from "@/hooks/useFormData";
-import { useSetting } from "@/hooks/useSetting";
-
+import { useWidgetList } from "@/hooks/useWidgetList";
 const { getActiveInfo } = useFormData();
-const { getComponentSetting } = useSetting();
+const { getComponentSetting } = useWidgetList();
 
 const getTabs = computed(() => getComponentSetting(unref(getActiveInfo).type));
 

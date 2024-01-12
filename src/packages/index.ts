@@ -1,6 +1,6 @@
-export const registerComponent = () => {
+const registerComponent = () => {
     const componentMap = new Map<string, any>();
-    const modules: any = import.meta.glob("./**/*.vue", { eager: true, import: "default" });
+    const modules: any = import.meta.glob("./**/index.vue", { eager: true, import: "default" });
 
     Object.keys(modules).forEach((key: string) => {
         const name = key.split("/")[2];
@@ -10,7 +10,7 @@ export const registerComponent = () => {
     return componentMap;
 };
 
-export const registerSetting = () => {
+const registerSetting = () => {
     const settingMap = new Map<string, any>();
     const modules: any = import.meta.glob("./**/setting.ts", { eager: true, import: "default" });
 
@@ -21,7 +21,7 @@ export const registerSetting = () => {
     return settingMap;
 };
 
-export const registerCode = () => {
+const registerCode = () => {
     const codeMap = new Map<string, any>();
     const modules: any = import.meta.glob("./**/code.ts", { eager: true, import: "default" });
     Object.keys(modules).forEach((key: string) => {
@@ -31,27 +31,37 @@ export const registerCode = () => {
     return codeMap;
 };
 
-export const createFormWidget = () => {
+const createFormWidget = () => {
     const modules: any = import.meta.glob("./widget/**/index.ts", { eager: true, import: "default" });
+
     return Object.values(modules);
 };
 
-export const createCustomWidget = () => {
+const createCustomWidget = () => {
     const modules: any = import.meta.glob("./custom/**/index.ts", { eager: true, import: "default" });
     return Object.values(modules);
 };
 
-export const createLayoutWidget = () => {
+const createLayoutWidget = () => {
     const modules: any = import.meta.glob("./layout/**/index.ts", { eager: true, import: "default" });
     return Object.values(modules);
 };
 
-export const createBasicWidget = () => {
+const createBasicWidget = () => {
     const modules: any = import.meta.glob("./basic/**/index.ts", { eager: true, import: "default" });
     return Object.values(modules);
 };
 
-export const createDataWidget = () => {
+const createDataWidget = () => {
     const modules: any = import.meta.glob("./data/**/index.ts", { eager: true, import: "default" });
     return Object.values(modules);
 };
+
+export const componentList = registerComponent();
+export const formWidgetList = createFormWidget();
+export const layoutWidgetList = createLayoutWidget();
+export const customWidgetList = createCustomWidget();
+export const basicWidgetList = createBasicWidget();
+export const dataWidgetList = createDataWidget();
+export const componentSetting = registerSetting();
+export const codeList = registerCode();

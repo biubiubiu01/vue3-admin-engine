@@ -2,7 +2,8 @@ import { omit, transformObject } from "@/utils";
 
 const renderCode = (config: any, renderCode: any) => {
     const { model, children, parentModel, onEvent, ...rest } = config;
-    const childStr = `${children.map((item: any) => renderCode(item.type, item, model)).join("\n")}`;
+
+    const childStr = children ? `${children?.map((item: any) => renderCode(item.type, item, model)).join("\n")}` : "";
 
     const params = transformObject(omit(rest, "label-suffix"));
 

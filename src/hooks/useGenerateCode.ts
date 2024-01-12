@@ -7,12 +7,13 @@ import parserPostcss from "prettier/parser-postcss";
 import { htmlTemplate, vue2Template, vue3Template } from "@/utils/template";
 import { useCode } from "./useCode";
 import { useGlobalStyle } from "./useGlobalStyle";
+import { deepClone } from "@/utils";
 
-const { renderTemplateCode, renderScriptCode, hasFormItem } = useCode();
+const { renderTemplateCode, renderScriptCode } = useCode();
 const { getStyle, getCompileStyle } = useGlobalStyle();
 
 export const useGenerateCode = () => {
-    const generateCode = (schema: TSchemaList, type: TExportType) => {
+    const generateCode = (schema: Component[], type: LanguageType) => {
         let code = "";
 
         const template = generateTemplate(schema);
@@ -38,21 +39,20 @@ export const useGenerateCode = () => {
         });
     };
 
-    const generateTemplate = (schema: TSchemaList) => {
-        const formChild = `${schema.reduce((t: string, c: any) => {
+    const generateTemplate = (schema: Component[]) => {
+        const deepSchema: Component[] = deepClone(schema);
+        deepSchema.forEach((item) => {
+            if (item.type === "form") {
+                item.class = item.class.replace("h100", "");
+            }
+        });
+
+        return `${deepSchema.reduce((t: string, c: any) => {
             return t + `${renderTemplateCode(c.type, c)}`;
         }, "")}`;
-
-        if (!hasFormItem(schema)) {
-            return formChild;
-        }
-
-        return `<el-form :model="formModel" :rules="formRules" label-width="120px">
-            ${formChild}
-        </el-form>`;
     };
 
-    const generateScript = (schema: TSchemaList, type: TExportType): any => {
+    const generateScript = (schema: Component[], type: LanguageType): any => {
         const script: any = renderScriptCode(schema, type);
 
         const { data, methods, plugin, customComp } = script;

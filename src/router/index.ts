@@ -14,11 +14,6 @@ const router = createRouter({
             path: "/",
             name: "Editor",
             component: () => import("@/views/editor/index.vue")
-        },
-        {
-            path: "/preview",
-            name: "Preivew",
-            component: () => import("@/views/preview/index.vue")
         }
     ],
     scrollBehavior: () => ({ left: 0, top: 0 })

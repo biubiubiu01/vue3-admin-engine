@@ -17,7 +17,7 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue"]);
 
-const color: any = useVModel(props, "modelValue", emit, { passive: true, defaultValue: props.defaultValue });
+const color: Ref<number | undefined> = useVModel(props, "modelValue", emit, { passive: true, defaultValue: props.defaultValue });
 </script>
 
 <style scoped></style>

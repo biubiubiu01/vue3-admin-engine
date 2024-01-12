@@ -21,11 +21,11 @@ import axios from "axios";
 
 const props = defineProps({
     modelValue: {
-        type: [Array, String, Number, Boolean, Object] as PropType<any>,
+        type: [Array, String, Number, Boolean, Object] as PropType<string | number | boolean | object | any[]>,
         default: undefined
     },
     modelLabel: {
-        type: [Array, String, Number, Boolean, Object] as PropType<any>,
+        type: [Array, String, Number, Boolean, Object] as PropType<string | number | boolean | object | any[]>,
         default: undefined
     },
     placeholder: {
@@ -118,14 +118,15 @@ const defaultOption = computed(() => {
     const { multiple, valueObject, modelValue, modelLabel } = props;
     if (isEmpty(modelValue)) return [];
     if (multiple) {
+        const value = modelValue as any[];
         if (valueObject) {
-            return modelValue!.filter((item: any) => !hasItem(item));
+            return value!.filter((item) => !hasItem(item));
         }
         const arr: any[] = [];
         if (Array.isArray(modelValue)) {
             modelValue.forEach((item, index) => {
                 if (!hasItem(item) && modelLabel) {
-                    arr.push(joinArr(modelLabel[index], item));
+                    arr.push(joinArr(value[index], item));
                 }
             });
         }

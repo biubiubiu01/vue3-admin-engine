@@ -8,17 +8,17 @@
  */
 import { transformObject, omit, transformEvent } from "@/utils";
 
-const renderCode = (config: any) => {
+const renderCode = (config: Component) => {
     const { model, parentModel, onEvent, ...rest } = config;
     return `<el-radio-group v-model="${parentModel}.${model}" ${transformEvent(onEvent)}>
          ${renderRadio(rest)}
     </el-radio-group>`;
 };
 
-const renderRadio = (props: any) => {
+const renderRadio = (props: Component) => {
     const raidoTag = props.shape === "button" ? "el-radio-button" : "el-radio";
     const config = transformObject(omit(props, ["shape", "options"]));
-    return props.options.reduce((t: string, c: any) => {
+    return props.options.reduce((t: string, c: AnyObject) => {
         return (t += `<${raidoTag} label=${c.value} ${config}>${c.label}</${raidoTag}>\n`);
     }, "");
 };

@@ -1,14 +1,6 @@
-import { registerComponent, createFormWidget, createCustomWidget, createLayoutWidget, createBasicWidget, createDataWidget } from "@/packages";
+import { componentList, formWidgetList, customWidgetList, layoutWidgetList, basicWidgetList, dataWidgetList, componentSetting } from "@/packages";
 
-const formList = ["base-input-number", "base-select"];
 export const useWidgetList = () => {
-    const componentList = registerComponent();
-    const formWidgetList = createFormWidget();
-    const customWidgetList = createCustomWidget();
-    const layoutWidgetList = createLayoutWidget();
-    const basicWidgetList = createBasicWidget();
-    const dataWidgetList = createDataWidget();
-
     const getFormWidgetList = sortAndFilter(formWidgetList);
 
     const getCustomWidgetList = sortAndFilter(customWidgetList);
@@ -19,7 +11,7 @@ export const useWidgetList = () => {
 
     const getDataWidgetList = sortAndFilter(dataWidgetList);
 
-    const getWidgetList = [...getFormWidgetList, ...getCustomWidgetList, ...getLayoutWidgetList, ...getBasicWidgetList, ...getDataWidgetList];
+    const getWidgetList: any[] = [...formWidgetList, ...customWidgetList, ...layoutWidgetList, ...basicWidgetList, ...dataWidgetList];
 
     function sortAndFilter(list: any[]) {
         return list.filter((item) => !item.hidden).sort((a: any, b: any) => a.sort - b.sort);
@@ -27,13 +19,13 @@ export const useWidgetList = () => {
 
     const getComponent = (key: string) => componentList.get(key);
 
-    const getComponentConfig = (key: string) => getWidgetList.find((item) => item.componentName === key);
+    const getComponentProps = (key: string) => getWidgetList.find((item) => item.componentName === key);
 
-    const isFormComp = (type: string) => !!getFormWidgetList.find((item: any) => item.scaffold.type === type) || formList.includes(type);
+    const getComponentSetting = (key: string) => componentSetting.get(key);
 
-    const isInlineComp = (type: string) => !!getBasicWidgetList.find((item: any) => item.scaffold.type === type);
+    const isFormItem = (key: string) => !!getFormWidgetList.find((item: any) => item.scaffold.type === key) || !!getComponentProps(key)?.isFormItem;
 
-    const isCustomComp = (type: string) => !!getCustomWidgetList.find((item: any) => item.scaffold.type === type);
+    const isWrapper = (key: string) => !!getComponentProps(key)?.isWrapper;
     return {
         getWidgetList,
         getFormWidgetList,
@@ -41,11 +33,10 @@ export const useWidgetList = () => {
         getLayoutWidgetList,
         getBasicWidgetList,
         getDataWidgetList,
-
+        getComponentSetting,
         getComponent,
-        getComponentConfig,
-        isFormComp,
-        isInlineComp,
-        isCustomComp
+        getComponentProps,
+        isFormItem,
+        isWrapper
     };
 };

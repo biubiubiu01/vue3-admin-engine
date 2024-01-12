@@ -23,6 +23,8 @@ export default createComponent({
         ]
     },
 
+    isFormItem: true,
+
     events: [
         {
             event: "change",

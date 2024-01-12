@@ -65,6 +65,9 @@ div:focus {
         height: 0;
     }
 }
+.bg-white {
+    background-color: #fff !important;
+}
 .inline {
     display: inline;
 }
@@ -77,6 +80,9 @@ div:focus {
 
 .pointer {
     cursor: pointer;
+}
+.col-resize {
+    cursor: col-resize;
 }
 
 .bold {

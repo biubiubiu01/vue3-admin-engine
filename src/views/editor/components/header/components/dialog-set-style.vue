@@ -17,9 +17,11 @@ const { getStyle, setStyle } = useGlobalStyle();
 
 const dialogVisible = ref(false);
 
-const styleCode = ref<any>({});
+const styleCode = ref("");
 
 const showDialog = () => {
+    console.log(unref(getStyle));
+
     styleCode.value = unref(getStyle);
     dialogVisible.value = true;
 };
@@ -29,7 +31,7 @@ const hideDialog = () => {
 };
 
 const handleSave = () => {
-    setStyle(styleCode.value);
+    setStyle(styleCode.value as string);
     hideDialog();
 };
 

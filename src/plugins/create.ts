@@ -1,6 +1,6 @@
 import { deepClone } from "@/utils";
 
-export const createComponent = (option: any) => {
+export const createComponent = (option: ComponentConfig) => {
     const componentOption = deepClone(option);
     if (!componentOption.scaffold) {
         componentOption.scaffold = {};
@@ -8,12 +8,14 @@ export const createComponent = (option: any) => {
     Object.assign(componentOption.scaffold, {
         type: option.componentName,
         label: option.title,
-        onEvent: option.onEvent || []
+        onEvent: option.onEvent || [],
+        style: option.style || {}
     });
+
     return componentOption;
 };
 
-export const createAttrSetting = (setting: any[]) => {
+export const createAttrSetting = (setting: Tpl[]) => {
     return [
         {
             title: "常规",
@@ -22,7 +24,7 @@ export const createAttrSetting = (setting: any[]) => {
     ];
 };
 
-export const createStyleSetting = (setting: any[]) => {
+export const createStyleSetting = (setting: Tpl[]) => {
     return [
         {
             title: "样式",
@@ -31,7 +33,7 @@ export const createStyleSetting = (setting: any[]) => {
     ];
 };
 
-export const createEventSetting = (setting: any[]) => {
+export const createEventSetting = (setting: Tpl[]) => {
     return [
         {
             title: "事件",

@@ -1,8 +1,8 @@
 import { registerSetting } from "@/packages";
 
-const settingList = registerSetting();
-
 export const useSetting = () => {
+    const settingList = registerSetting();
+
     const getComponentSetting = (key: string) => settingList.get(key);
 
     return {

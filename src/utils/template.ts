@@ -1,4 +1,10 @@
-export const htmlTemplate = (template?: string, script?: any, style?: any) => {
+interface ScriptCode {
+    plugin?: string;
+    data?: string;
+    methods?: string;
+}
+
+export const htmlTemplate = (template?: string, script?: ScriptCode, style?: string) => {
     return `
     <!DOCTYPE html>
       <html>
@@ -16,18 +22,17 @@ export const htmlTemplate = (template?: string, script?: any, style?: any) => {
         </div>
         <script src="https://unpkg.com/vue@2.7.14/dist/vue.js"></script>
         <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-        ${script.plugin}
-        ${script.customComp.script}
+        ${script!.plugin}
         <script>
           var app = new Vue({
             el: '#app',
             data(){
               return{
-                ${script.data}
+                ${script!.data}
               }
             },
             methods:{
-              ${script.methods || ""}
+              ${script!.methods || ""}
             }
           })
         </script>
@@ -36,24 +41,21 @@ export const htmlTemplate = (template?: string, script?: any, style?: any) => {
     `;
 };
 
-export const vue2Template = (template?: string, script?: any, style?: any) => {
+export const vue2Template = (template?: string, script?: ScriptCode, style?: string) => {
     return `
       <template>
         ${template}
       </template>
 
       <script>
-        ${script.plugin}
-        ${script.customComp.script}
          export default{
-            components:{${script.customComp.componentList}},
             data(){
                 return{
-                   ${script.data}
+                   ${script!.data}
                 }
             },
             methods:{
-              ${script.methods || ""}
+              ${script!.methods || ""}
             }
          }
       </script>
@@ -64,18 +66,16 @@ export const vue2Template = (template?: string, script?: any, style?: any) => {
     `;
 };
 
-export const vue3Template = (template?: string, script?: any, style?: any) => {
+export const vue3Template = (template?: string, script?: ScriptCode, style?: string) => {
     return `
       <template>
         ${template}
       </template>
 
       <script lang="ts" setup>
-         ${script.plugin}
-         ${script.customComp.script}
-         ${script.data}
+         ${script!.data}
          
-         ${script.methods}
+         ${script!.methods}
       </script>
 
       <style lang="scss">

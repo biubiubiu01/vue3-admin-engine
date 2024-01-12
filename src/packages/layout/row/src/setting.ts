@@ -23,7 +23,8 @@ const attrSetting = createAttrSetting([
     getSchemaTpl("collapse", [
         {
             label: "布局配置",
-            name: "layout",
+            type: "collapse-item",
+            model: "layout",
             children: [
                 {
                     label: "列数",

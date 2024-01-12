@@ -1,15 +1,13 @@
 <script lang="tsx">
 import { useVModel } from "@vueuse/core";
-import { useWidgetList } from "@/hooks/useWidgetList";
 import { useFormData } from "@/hooks/useFormData";
+import { deepClone } from "@/utils";
 
 export default defineComponent({
     props: {
         modelValue: {
-            type: [Number, String, Boolean]
-        },
-        defaultValue: {
-            type: [Number, String, Boolean]
+            type: Boolean,
+            default: false
         },
         formType: {
             type: String
@@ -27,41 +25,53 @@ export default defineComponent({
     },
     emit: ["update:modelValue"],
     setup(props, context) {
-        const { getComponent } = useWidgetList();
+        const switchValue: Ref<boolean | undefined> = useVModel(props, "modelValue", context.emit, { passive: true });
 
         const { getActiveInfo } = useFormData();
-
-        const switchValue: any = useVModel(props, "modelValue", context.emit, { passive: true, defaultValue: props.defaultValue });
+        const dialogForm: Ref<AnyObject> = ref({});
 
         const dialogVisible = ref(false);
 
+        const handleShowDialog = () => {
+            dialogForm.value = deepClone(getActiveInfo.value);
+            dialogVisible.value = true;
+        };
+
+        const handleHideDialog = () => {
+            dialogVisible.value = false;
+        };
+
         const renderDialog = () => {
             return (
-                <>
-                    {renderDialogIcon()}
-                    {h(
-                        getComponent("dialog"),
-                        {
-                            visible: dialogVisible.value,
-                            label: props.label,
-                            appendToBody: true,
-                            width: "800px",
-                            preview: true,
-                            "onUpdate:visible": (value: boolean) => {
-                                dialogVisible.value = value;
-                            }
-                        },
-                        renderForm
-                    )}
-                </>
+                <el-dialog v-model={dialogVisible.value} title={props.label} appendToBody width="800px">
+                    {{
+                        default: () => renderForm(),
+                        footer: () => (
+                            <div class="tc">
+                                <el-button type="primary" size="default" plain onClick={handleHideDialog}>
+                                    取 消
+                                </el-button>
+                                <el-button
+                                    type="primary"
+                                    size="default"
+                                    onClick={() => {
+                                        getActiveInfo.value[props.name] = dialogForm.value[props.name];
+                                        handleHideDialog();
+                                    }}
+                                >
+                                    保 存
+                                </el-button>
+                            </div>
+                        )
+                    }}
+                </el-dialog>
             );
         };
 
         const renderDialogIcon = () => {
-            if (!switchValue.value) return null;
             return (
                 <el-tooltip content="编辑详情" placement="bottom">
-                    <base-icon icon="editPen" size={16} class="pointer switch-icon" onClick={() => (dialogVisible.value = true)} />
+                    <base-icon icon="editPen" size={16} class="pointer switch-icon" onClick={handleShowDialog} />
                 </el-tooltip>
             );
         };
@@ -69,11 +79,13 @@ export default defineComponent({
         const renderForm = () => {
             const formElement = {
                 type: "form",
+                name: props.name,
                 "label-width": "90px",
                 ...props.form
             };
+            const data = props.formType === "dialog" ? dialogForm.value : getActiveInfo.value;
 
-            return <render-item element={formElement} data={getActiveInfo.value[props.name]} preview={true} />;
+            return <render-setting item={formElement} data={data} />;
         };
 
         const renderExtend = () => {
@@ -81,15 +93,17 @@ export default defineComponent({
         };
 
         return () => {
-            const { formType, label } = props;
+            const { formType } = props;
+
             return (
                 <div>
-                    <el-form-item label={label}>
+                    <form-item label={props.label}>
                         <div class="flex-center justify-between w100">
                             <el-switch v-model={switchValue.value} {...context.attrs} />
-                            {formType === "dialog" && switchValue.value ? renderDialog() : null}
+                            {formType === "dialog" && switchValue.value ? renderDialogIcon() : null}
                         </div>
-                    </el-form-item>
+                    </form-item>
+                    {formType === "dialog" ? renderDialog() : null}
                     {formType === "extend" && switchValue.value ? renderExtend() : null}
                 </div>
             );
@@ -103,31 +117,6 @@ export default defineComponent({
     color: var(--el-text-color-regular);
     &:hover {
         color: var(--el-color-primary);
-    }
-}
-.switch-extend {
-    box-sizing: border-box;
-    padding: 12px 0 2px;
-    margin-bottom: 12px;
-    margin-top: -4px;
-    background-color: var(--el-border-color-lighter);
-    border-radius: 6px;
-    position: relative;
-    box-shadow: var(--el-border-color);
-    &::before {
-        position: absolute;
-        content: "";
-        left: 28px;
-        transform: translate(69px, 0px);
-        top: -5px;
-        width: 10px;
-        height: 10px;
-        border-bottom-color: transparent !important;
-        border-right-color: transparent !important;
-        border-top-left-radius: 2px;
-        border: 1px solid var(--el-border-color);
-        background-color: var(--el-border-color-lighter);
-        transform: rotate(45deg);
     }
 }
 </style>

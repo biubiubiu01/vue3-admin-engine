@@ -1,9 +1,10 @@
 import { createComponent } from "@/plugins/create";
+import { ItemTypeEnum } from "@/enums/itemTypeEnum";
 
 export default createComponent({
     sort: 1,
 
-    componentName: "input",
+    componentName: ItemTypeEnum.Input,
 
     title: "单行文本",
 
@@ -37,5 +38,7 @@ export default createComponent({
         }
     ],
 
-    description: "单行文本输入框"
+    description: "单行文本输入框",
+
+    isFormItem: true
 });

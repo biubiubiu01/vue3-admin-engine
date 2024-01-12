@@ -6,7 +6,13 @@
  * @FilePath: \vue3-form-drag\src\utils\common.ts
  *
  */
-import { isArray, isBoolean, isObject, isString } from "./is";
+import { isArray, isBoolean, isEmpty, isObject, isString } from "./is";
+
+interface TransformConfig {
+    quote?: boolean;
+    connect?: string;
+    split?: string;
+}
 
 /**
  * 排除掉obj里面的key值
@@ -88,7 +94,7 @@ export function deepMerge<T = any>(src: any = {}, target: any = {}): T {
     return src;
 }
 
-export const transformObject = (obj: any, config: any = {}) => {
+export const transformObject = (obj: AnyObject, config: TransformConfig = {}) => {
     const defineConfig = { quote: true, connect: "=", split: " " };
     const options = Object.assign({}, defineConfig, config);
     const quote = options.quote ? `"` : ``;
@@ -107,34 +113,21 @@ export const transformObject = (obj: any, config: any = {}) => {
     return params;
 };
 
-export const transformStyle = (element: any): any => {
-    const elementStyle: any = {};
+export const transformStringToStyle = (style: string): AnyObject => {
+    const elementStyle: AnyObject = {};
 
-    const mergeFields = ["margin", "padding"];
-    const inlineStyle = element.sourceStyle?.replace(/[ ]|[\r\n]|#main|{|}/g, "") || "";
-
-    const fields = Object.keys(element).filter((item: string) => item.includes("style:"));
-
-    fields.forEach((item) => {
-        const key = item.split(":")[1];
-        const value = element[item];
-        if (mergeFields.includes(key)) {
-            elementStyle[key] = `${value.top || "0px"} ${value.right || "0px"} ${value.bottom || "0px"} ${value.left || "0px"}`;
-        } else {
-            elementStyle[key] = `${value}`;
-        }
-    });
+    const inlineStyle = style?.replace(/[\r\n]|#main|{|}/g, "") || "";
 
     if (inlineStyle) {
         const styleList = inlineStyle.split(";").filter((item: string) => item);
 
         styleList.forEach((item: string) => {
-            const key = item.split(":")[0];
-            const value = item.split(":")[1];
-            if (mergeFields.includes(key)) {
-                elementStyle[key] = value.split("px").join("px ");
-            } else {
-                elementStyle[key] = value;
+            if (item?.trim?.()) {
+                const key = item.split(":")[0].trim();
+                const value = item.split(":")[1].trim();
+                if (!isEmpty(key) && !isEmpty(value)) {
+                    elementStyle[key] = value;
+                }
             }
         });
     }
@@ -142,8 +135,8 @@ export const transformStyle = (element: any): any => {
     return elementStyle;
 };
 
-export const transformEvent = (events: any[]) => {
-    return events.map((item) => `@${item.event}=${item.eventName}`).join(" ");
+export const transformEvent = (events: ComponentEvent[]) => {
+    return events?.map((item) => `@${item.event}=${item.eventName}`).join(" ") || "";
 };
 
 type Key = string | number;
@@ -175,4 +168,17 @@ export const setValue = (obj: Record<Key, any>, path: Array<Key> | string, value
     }
 
     target[lastKey] = value;
+};
+
+export const deleteValue = (obj: Record<Key, any>, path: Array<Key> | string): any => {
+    const pathArr: Array<Key> = Array.isArray(path) ? path : path.toString().split(/[.[\]]/);
+    let result: any = obj;
+
+    pathArr.forEach((key, index) => {
+        if (index !== pathArr.length - 1) {
+            result = result?.[key];
+        } else {
+            delete result[key];
+        }
+    });
 };

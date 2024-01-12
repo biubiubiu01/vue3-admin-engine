@@ -4,15 +4,12 @@ import { placementPosition, formPositionOption, horizontalOption, verticalOption
 import { tagOptions } from "@/constant/tag";
 import { triggerOption, ruleTriggerOption } from "@/constant/trigger";
 import { useFormData } from "@/hooks/useFormData";
-import { addColItem } from "@/packages/layout/row/index";
 
 const { getActiveInfo } = useFormData();
 
-const tpls: {
-    [propName: string]: any;
-} = {};
+const tpls: AnyObject = {};
 
-export const getSchemaTpl = (name: string, options?: any) => {
+export const getSchemaTpl = (name: string, options?: object) => {
     const tpl = tpls[name];
 
     return typeof tpl === "function" ? tpl(options) : tpl ?? {};
@@ -104,7 +101,7 @@ setSchemaTpl("summaryGroup", {
     name: "summary-group",
     type: "switch-more",
     formType: "extend",
-    pipeIn: (value: any) => value?.["show-summary"],
+    pipeIn: (value: AnyObject) => value?.["show-summary"],
     pipeOut: (value: boolean) => {
         if (value) {
             return {
@@ -262,7 +259,7 @@ setSchemaTpl("showType", {
     }
 });
 
-setSchemaTpl("justifyLayout", (params: any) => {
+setSchemaTpl("justifyLayout", (params: AnyObject) => {
     return {
         label: "水平布局",
         name: "justify",
@@ -272,7 +269,7 @@ setSchemaTpl("justifyLayout", (params: any) => {
     };
 });
 
-setSchemaTpl("alignLayout", (params: any) => {
+setSchemaTpl("alignLayout", (params: AnyObject) => {
     return {
         label: "垂直布局",
         name: "align",
@@ -340,6 +337,18 @@ setSchemaTpl("clearable", {
     type: "switch"
 });
 
+// setSchemaTpl("visibleOn", {
+//     label: "显示",
+//     name: "visibleOn",
+//     type: "switch"
+// });
+
+// setSchemaTpl("hiddenOn", {
+//     label: "隐藏",
+//     name: "hiddenOn",
+//     type: "switch"
+// });
+
 setSchemaTpl("disabled", {
     label: "禁用",
     name: "disabled",
@@ -370,7 +379,7 @@ setSchemaTpl("multiple", {
     type: "switch"
 });
 
-setSchemaTpl("dateType", (option: any[]) => {
+setSchemaTpl("dateType", (option: DateOption[]) => {
     return {
         label: "日期类型",
         name: "dateType",
@@ -401,76 +410,77 @@ setSchemaTpl("labelRemark", {
     name: "labelRemark",
     type: "switch-more",
     formType: "dialog",
-    pipeIn: (value: any) => !!value,
+    pipeIn: (value: LabelRemark | undefined) => !!value,
     pipeOut: (value: boolean) => {
         if (value) {
             return {
                 icon: "QuestionFilled",
                 trigger: "hover",
                 placement: "top",
-                title: "",
-                content: ""
+                title: "提示",
+                content: "这是一段标题提示"
             };
         }
         return undefined;
     },
     form: {
         size: "default",
-        layoutType: "row",
-        gutter: 16,
         children: [
-            addColItem({
+            {
+                type: "row",
                 children: [
                     {
-                        name: "title",
-                        type: "input",
-                        label: "提示标题",
-                        placeholder: "请输入提示标题",
+                        type: "col",
                         span: 12,
-                        size: "default"
+                        children: [
+                            { name: "title", type: "input", label: "提示标题", placeholder: "请输入提示标题", span: 12, size: "default" },
+                            {
+                                name: "content",
+                                type: "textarea",
+                                label: "内容",
+                                span: 12,
+                                size: "default"
+                            }
+                        ]
                     },
                     {
-                        name: "content",
-                        type: "textarea",
-                        label: "内容",
+                        type: "col",
                         span: 12,
-                        size: "default"
-                    }
-                ]
-            }),
-            addColItem({
-                children: [
-                    {
-                        name: "placement",
-                        type: "select",
-                        options: placementPosition,
-                        label: "弹出位置",
-                        span: 12,
-                        class: "w100",
-                        size: "default"
+                        children: [
+                            {
+                                name: "placement",
+                                type: "select",
+                                options: placementPosition,
+                                label: "弹出位置",
+                                span: 12,
+                                class: "w100",
+                                size: "default"
+                            },
+                            {
+                                name: "icon",
+                                type: "icon-select",
+                                label: "图标",
+                                span: 12,
+                                size: "default"
+                            }
+                        ]
                     },
                     {
-                        name: "icon",
-                        type: "icon-select",
-                        label: "图标",
-                        span: 12,
-                        size: "default"
-                    }
-                ]
-            }),
-            addColItem({
-                span: 24,
-                children: [
-                    {
-                        name: "trigger",
-                        type: "radio",
-                        options: triggerOption,
-                        label: "触发方式",
+                        type: "col",
                         span: 24,
-                        size: "default"
+                        children: [
+                            {
+                                name: "trigger",
+                                type: "radio",
+                                options: triggerOption,
+                                label: "触发方式",
+                                span: 24,
+                                size: "default"
+                            }
+                        ]
                     }
                 ]
-            })
+            }
         ]
     }
 });
@@ -481,7 +491,7 @@ setSchemaTpl("validateMax", {
     type: "switch-more",
     formType: "extend",
     size: "small",
-    pipeIn: (value: any) => !!value,
+    pipeIn: (value: { number: number; message: string | undefined } | undefined) => !!value,
     pipeOut: (value: boolean) => {
         if (value) {
             return {
@@ -515,7 +525,7 @@ setSchemaTpl("validateMin", {
     name: "validateMin",
     type: "switch-more",
     formType: "extend",
-    pipeIn: (value: any) => !!value,
+    pipeIn: (value: { number: number; message: string | undefined } | undefined) => !!value,
     pipeOut: (value: boolean) => {
         if (value) {
             return {
@@ -544,10 +554,11 @@ setSchemaTpl("validateMin", {
     }
 });
 
-setSchemaTpl("validateGroup", (config: any[]) => {
+setSchemaTpl("validateGroup", (config: Tpl[]) => {
     return {
         label: "校验配置",
-        name: "validate",
+        model: "validate",
+        type: "collapse-item",
         children: [
             {
                 label: "必填",
@@ -575,15 +586,14 @@ setSchemaTpl(
     (
         config: Array<{
             label: string;
-            columns: any[];
+            children: Component[];
         }>
     ) => {
         return {
             label: "",
-            name: "collapse",
+            model: "collapse",
             type: "collapse",
-            defaultExpandAll: true,
-            columns: config
+            children: config
         };
     }
 );
@@ -596,119 +606,183 @@ setSchemaTpl("class", {
 
 setSchemaTpl("styleWidth", {
     label: "宽度",
-    name: "style:width",
+    name: "style.width",
     type: "input"
 });
 
 setSchemaTpl("styleHeight", {
     label: "高度",
-    name: "style:height",
+    name: "style.height",
     type: "input"
 });
 
-setSchemaTpl("styleCommonPosition", [
-    {
-        name: "top",
-        type: "input",
-        label: "top",
-        size: "small"
-    },
-    {
-        name: "right",
-        type: "input",
-        label: "right",
-        size: "small"
-    },
-    {
-        name: "bottom",
-        type: "input",
-        label: "bottom",
-        size: "small"
-    },
-    {
-        name: "left",
-        type: "input",
-        label: "left",
-        size: "small"
-    }
-]);
+const position = ["top", "right", "bottom", "left"];
 
 setSchemaTpl("styleMargin", {
     label: "外边距",
-    name: "style:margin",
     type: "switch-more",
     formType: "extend",
-    pipeIn: (value: any) => !!value,
-    pipeOut: (value: boolean) => {
-        if (value) {
-            return {};
+    virtualBind: true,
+    pipeIn: (value: any, item: Component, data: AnyObject) => {
+        return Object.keys(data.style).some((val) => val.includes("margin"));
+    },
+    pipeOut: (value: boolean, item: Component, data: AnyObject) => {
+        if (!value) {
+            position.forEach((val) => {
+                delete data.style[`margin-${val}`];
+            });
         }
-        return undefined;
     },
     form: {
         "label-width": "80px",
-        children: getSchemaTpl("styleCommonPosition")
+        children: position.map((positionItem) => {
+            return {
+                name: `style.margin-${positionItem}`,
+                type: "input",
+                label: positionItem,
+                size: "small",
+                pipeIn: (value: string, item: Component, data: AnyObject) => {
+                    const margin = data.style?.margin;
+                    if (margin) {
+                        const marginList = margin.split(" ");
+                        if (marginList.length > 0) {
+                            const marginMap: AnyObject = {};
+                            marginMap.top = marginList[0];
+                            marginMap.right = marginList[1] || marginMap.top;
+                            marginMap.bottom = marginList[2] || marginMap.top;
+                            marginMap.left = marginList[3] || marginMap.right;
+                            return marginMap[positionItem];
+                        }
+                    }
+                    return value;
+                }
+            };
+        })
     }
 });
 
 setSchemaTpl("stylePadding", {
     label: "内边距",
-    name: "style:padding",
     type: "switch-more",
     formType: "extend",
-    pipeIn: (value: any) => !!value,
-    pipeOut: (value: boolean) => {
-        if (value) {
-            return {};
+    virtualBind: true,
+    pipeIn: (value: any, item: Component, data: AnyObject) => {
+        return Object.keys(data.style).some((val) => val.includes("padding"));
+    },
+    pipeOut: (value: boolean, item: Component, data: AnyObject) => {
+        if (!value) {
+            position.forEach((val) => {
+                delete data.style[`padding-${val}`];
+            });
         }
-        return undefined;
     },
     form: {
         "label-width": "80px",
-        children: getSchemaTpl("styleCommonPosition")
+        children: position.map((positionItem) => {
+            return {
+                name: `style.padding-${positionItem}`,
+                type: "input",
+                label: positionItem,
+                pipeIn: (value: string, item: Component, data: AnyObject) => {
+                    const padding = data.style?.padding;
+                    if (padding) {
+                        const paddingList = padding.split(" ");
+                        if (paddingList.length > 0) {
+                            const paddingMap: AnyObject = {};
+                            paddingMap.top = paddingList[0];
+                            paddingMap.right = paddingList[1] || paddingMap.top;
+                            paddingMap.bottom = paddingList[2] || paddingMap.top;
+                            paddingMap.left = paddingList[3] || paddingMap.right;
+                            return paddingMap[positionItem];
+                        }
+                    }
+                    return value;
+                },
+                size: "small"
+            };
+        })
     }
 });
 
 setSchemaTpl("styleColor", {
     label: "文字颜色",
-    name: "style:color",
+    name: "style.color",
     type: "color-picker"
 });
 
 setSchemaTpl("styleBgColor", {
     label: "背景颜色",
-    name: "style:background-color",
+    name: "style.background-color",
     type: "color-picker"
 });
 
 setSchemaTpl("styleFontSize", {
     label: "字号",
-    name: "style:font-size",
+    name: "style.font-size",
     type: "input"
 });
 
 setSchemaTpl("styleLineHeight", {
     label: "行高",
-    name: "style:line-height",
+    name: "style.line-height",
     type: "input"
 });
 
 setSchemaTpl("stylePosition", {
-    label: "定位",
-    name: "style:position",
-    type: "select",
-    options: cssPosition
+    label: "使用定位",
+    type: "switch-more",
+    formType: "extend",
+    virtualBind: true,
+    pipeIn: (value: any, item: Component, data: AnyObject) => {
+        return Object.keys(data.style).some((val) => val.includes("position"));
+    },
+    pipeOut: (value: boolean, item: Component, data: AnyObject) => {
+        if (!value) {
+            position.forEach((val) => {
+                delete data.style[val];
+            });
+            delete data.style.position;
+        }
+    },
+    form: {
+        "label-width": "80px",
+        children: [
+            {
+                label: "定位",
+                name: "style.position",
+                type: "select",
+                clearable: true,
+                options: cssPosition,
+                size: "small",
+                onChange: (value: string) => {
+                    if (!value) {
+                        position.forEach((val) => {
+                            delete getActiveInfo.value.style[val];
+                        });
+                    }
+                }
+            },
+            ...position.map((item) => {
+                return {
+                    name: `style.${item}`,
+                    type: "input",
+                    label: item,
+                    size: "small"
+                };
+            })
+        ]
+    }
 });
 
 setSchemaTpl("styleZIndex", {
     label: "层级",
-    name: "style:z-index",
+    name: "style.z-index",
     type: "number"
 });
 
 setSchemaTpl("styleFontWeight", {
     label: "字重",
-    name: "style:font-weight",
+    name: "style.font-weight",
     type: "number",
     min: 100,
     step: 100,
@@ -717,26 +791,26 @@ setSchemaTpl("styleFontWeight", {
 
 setSchemaTpl("styleBorderWidth", {
     label: "边框",
-    name: "style:border-width",
+    name: "style.border-width",
     type: "input"
 });
 
 setSchemaTpl("styleBorderStyle", {
     label: "边框类型",
-    name: "style:border-style",
+    name: "style.border-style",
     type: "radio",
     options: borderTypeOptions
 });
 
 setSchemaTpl("styleBorderColor", {
     label: "边框颜色",
-    name: "style:border-color",
+    name: "style.border-color",
     type: "color-picker"
 });
 
 setSchemaTpl("styleBorderRadius", {
     label: "边框圆角",
-    name: "style:border-radius",
+    name: "style.border-radius",
     type: "input"
 });
 
@@ -747,23 +821,29 @@ setSchemaTpl("basicGroup", ({ config = [], isFormItem = false }) => {
     }
     return {
         label: "基础配置",
-        name: "basic",
+        model: "basic",
+        type: "collapse-item",
         children: [...formItemConfig, ...config]
     };
 });
 
-setSchemaTpl("statusGroup", (config: any[]) => {
+setSchemaTpl("statusGroup", (config: Tpl[]) => {
     return {
         label: "状态配置",
-        name: "status",
-        children: config
+        model: "status",
+        type: "collapse-item",
+        children: [
+            // getSchemaTpl("visibleOn"), getSchemaTpl("hiddenOn"),
+            ...config
+        ]
     };
 });
 
-setSchemaTpl("optionsGroup", (config: any[] = []) => {
+setSchemaTpl("optionsGroup", (config: Tpl[] = []) => {
     return {
         label: "选项",
-        name: "options",
+        model: "options",
+        type: "collapse-item",
         children: [
             // {
             //     label: "数据来源",
@@ -792,10 +872,11 @@ setSchemaTpl("optionsGroup", (config: any[] = []) => {
     };
 });
 
-setSchemaTpl("dynamicOptionGroup", (config: any[] = []) => {
+setSchemaTpl("dynamicOptionGroup", (config: Tpl[] = []) => {
     return {
         label: "选项",
-        name: "dynamicOptionGroup",
+        model: "dynamicOptionGroup",
+        type: "collapse-item",
         children: [
             {
                 label: "显示字段",
@@ -853,78 +934,58 @@ setSchemaTpl("dynamicOptionGroup", (config: any[] = []) => {
     };
 });
 
-setSchemaTpl("layoutGroup", (config: any[] = []) => {
+setSchemaTpl("layoutGroup", (config: Tpl[] = []) => {
     return {
         label: "布局配置",
-        name: "layout",
+        model: "layout",
+        type: "collapse-item",
         children: [getSchemaTpl("styleWidth"), getSchemaTpl("styleHeight"), getSchemaTpl("styleMargin"), getSchemaTpl("stylePadding"), ...config]
     };
 });
 
-setSchemaTpl("textGroup", (config: any[] = []) => {
+setSchemaTpl("textGroup", (config: Tpl[] = []) => {
     return {
         label: "基础配置",
-        name: "text",
+        type: "collapse-item",
+        model: "text",
         children: [getSchemaTpl("styleFontSize"), getSchemaTpl("styleLineHeight"), getSchemaTpl("styleFontWeight"), getSchemaTpl("styleColor"), getSchemaTpl("styleBgColor"), ...config]
     };
 });
 
-setSchemaTpl("positionGroup", (config: any[] = []) => {
+setSchemaTpl("positionGroup", (config: Tpl[] = []) => {
     return {
         label: "位置配置",
-        name: "position",
-        children: [
-            getSchemaTpl("stylePosition"),
-            {
-                label: "top",
-                name: "style:top",
-                type: "input"
-            },
-            {
-                label: "right",
-                name: "style:right",
-                type: "input"
-            },
-            {
-                label: "bottom",
-                name: "style:bottom",
-                type: "input"
-            },
-            {
-                label: "left",
-                name: "style:left",
-                type: "input"
-            },
-            getSchemaTpl("styleZIndex"),
-            ...config
-        ]
+        model: "position",
+        type: "collapse-item",
+        children: [getSchemaTpl("stylePosition"), getSchemaTpl("styleZIndex"), ...config]
     };
 });
 
-setSchemaTpl("borderGroup", (config: any[] = []) => {
+setSchemaTpl("borderGroup", (config: Tpl[] = []) => {
     return {
         label: "边框配置",
-        name: "border",
+        type: "collapse-item",
+        model: "border",
         children: [getSchemaTpl("styleBorderWidth"), getSchemaTpl("styleBorderStyle"), getSchemaTpl("styleBorderColor"), getSchemaTpl("styleBorderRadius"), ...config]
     };
 });
 
 setSchemaTpl("sourceCodeGroup", {
     label: "源码配置",
-    name: "sourceCode",
+    model: "sourceCode",
+    type: "collapse-item",
     children: [
         {
-            label: "",
-            name: "sourceStyle",
             type: "source-control"
         }
     ]
 });
 
-setSchemaTpl("columnGroup", (config: any[] = []) => {
+setSchemaTpl("columnGroup", (config: Tpl[] = []) => {
     return {
         label: "列配置",
-        name: "tableColumn",
+        type: "collapse-item",
+        model: "tableColumn",
         children: [
             {
                 label: "",

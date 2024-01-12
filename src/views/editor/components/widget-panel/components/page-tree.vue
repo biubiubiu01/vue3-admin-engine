@@ -8,12 +8,11 @@
         :data="getSchemaJson"
         default-expand-all
         node-key="id"
+        :key="treeKey"
         highlight-current
         :current-node-key="getActiveId"
-        draggable
         :expand-on-click-node="false"
         :filter-node-method="filterNode"
-        :allow-drop="allowDrop"
         @node-click="handleClickItem"
     >
     </ElTree>
@@ -21,6 +20,7 @@
 
 <script lang="ts" setup>
 import { useFormData } from "@/hooks/useFormData";
+import { useNanoid } from "@/hooks/useNanoid";
 import { ElTree } from "element-plus";
 
 interface Tree {
@@ -30,21 +30,13 @@ interface Tree {
 const { getSchemaJson, getActiveId, setActive } = useFormData();
 
 const filterText = ref("");
+const treeKey = ref(useNanoid());
 
 const treeRef = ref<InstanceType<typeof ElTree>>();
 
 const filterNode = (value: string, data: Tree) => {
     if (!value) return true;
     return data.title.includes(value);
-};
-
-const allowDrop = (moveNode: Tree, inNode: Tree, type: string) => {
-    if (moveNode.data.label === "col容器") return false;
-    if (moveNode.level === 1 && inNode.level === 1 && type !== "inner") return true;
-    if (moveNode.level > 1 && inNode.level >= 1 && type === "inner") return false;
-    if (moveNode.level === 1 && (moveNode.data?.children?.length || inNode.data.type !== "wrapper")) return false;
-
-    return true;
 };
 
 const handleClickItem = (node: Tree) => {
@@ -54,6 +46,16 @@ const handleClickItem = (node: Tree) => {
 watch(filterText, (val) => {
     treeRef.value!.filter(val);
 });
+
+watch(
+    getSchemaJson,
+    () => {
+        treeKey.value = useNanoid();
+    },
+    {
+        deep: true
+    }
+);
 </script>
 
 <style lang="scss" scoped>

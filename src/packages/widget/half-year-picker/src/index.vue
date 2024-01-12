@@ -79,22 +79,22 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue", "change"]);
 
-const date: any = useVModel(props, "modelValue", emit, { passive: true });
+const date: Ref<string | undefined> = useVModel(props, "modelValue", emit, { passive: true });
 
 const pickerVisible = ref(false);
 
 const quarterText = ["上半年", "下半年"];
 
-const year = computed(() => {
+const year = computed((): string => {
     if (!unref(date)) return "";
-    return unref(date)?.split("-")[0];
+    return unref(date)!?.split("-")[0];
 });
 
 const currentYear = ref(parseFloat(year.value) || new Date().getFullYear());
 
 const halfIndex = computed(() => {
     if (!unref(date)) return -1;
-    return parseFloat(unref(date)?.split("-")[1]) - 1;
+    return parseFloat(unref(date)!?.split("-")[1]) - 1;
 });
 
 const displayValue = computed(() => {

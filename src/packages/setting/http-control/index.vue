@@ -16,7 +16,7 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue"]);
 
-const httpConfig: any = useVModel(props, "modelValue", emit, { passive: true });
+const httpConfig: Ref<object> = useVModel(props, "modelValue", emit, { passive: true });
 
 const dialogVisible = ref(false);
 
@@ -24,7 +24,7 @@ const handleShowHttpDialog = () => {
     dialogVisible.value = true;
 };
 
-const handleSave = (form: any) => {
+const handleSave = (form: object) => {
     httpConfig.value = form;
 };
 </script>

@@ -45,7 +45,7 @@
 
 <script lang="ts" setup>
 import { useWidgetList } from "@/hooks/useWidgetList";
-import form from "@/packages/data/form";
+import { useFormData } from "@/hooks/useFormData";
 import { deepClone, isEmpty } from "@/utils";
 import { useVModel } from "@vueuse/core";
 
@@ -53,12 +53,6 @@ const props = defineProps({
     modelValue: {
         type: [String, Array],
         default: () => []
-    },
-    data: {
-        type: Object as PropType<any>
-    },
-    preview: {
-        type: Boolean
     }
 });
 
@@ -84,7 +78,9 @@ const emit = defineEmits(["update:modelValue"]);
 
 const methodList: any = useVModel(props, "modelValue", emit, { passive: true });
 
-const { getComponentConfig } = useWidgetList();
+const { getActiveInfo } = useFormData();
+
+const { getComponentProps } = useWidgetList();
 
 const dialogVisible = ref(false);
 
@@ -109,7 +105,7 @@ const getEventRemark = computed(() => {
     };
 });
 
-const eventList = computed(() => getComponentConfig(props.data.type).events);
+const eventList = computed(() => getComponentProps(getActiveInfo.value.type).events);
 
 const handleAddMethod = () => {
     editIndex.value = null;

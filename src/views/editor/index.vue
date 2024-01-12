@@ -1,16 +1,16 @@
 <template>
     <el-container class="editor-container all-container">
         <el-header height="48px">
-            <Header :preview="preview" />
+            <Header />
         </el-header>
         <el-container class="main-container">
-            <el-aside width="300px" v-if="!preview">
+            <el-aside width="300px" v-if="!isPreview">
                 <WidgetPanel />
             </el-aside>
             <el-main>
-                <FormWidget :preview="preview" />
+                <FormWidget />
             </el-main>
-            <el-aside width="300px" v-if="!preview">
+            <el-aside width="300px" v-if="!isPreview">
                 <SettingPanel />
             </el-aside>
         </el-container>
@@ -22,13 +22,9 @@ import Header from "./components/header/index.vue";
 import WidgetPanel from "./components/widget-panel/index.vue";
 import FormWidget from "./components/form-widget/index.vue";
 import SettingPanel from "./components/setting-panel/index.vue";
+import { usePreview } from "@/hooks/useGlobalStatus";
 
-const props = defineProps({
-    preview: {
-        type: Boolean,
-        default: false
-    }
-});
+const [isPreview] = usePreview();
 </script>
 
 <style lang="scss">

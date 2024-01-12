@@ -1,6 +1,6 @@
 const EVAL_CACHE: { [key: string]: Function } = {};
 
-export const evalExpressionWithConditionBuilder = (express: any, data: object): boolean => {
+export const evalExpressionWithConditionBuilder = (express: string, data: object): boolean => {
     if (!express || typeof express !== "string") {
         return false;
     }

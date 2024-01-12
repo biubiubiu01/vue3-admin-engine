@@ -17,7 +17,7 @@
                         :sort="false"
                         animation="300"
                         draggable=".components-item"
-                        :clone="handleClone"
+                        :clone="createJson"
                         :list="item.children"
                         item-key="componentName"
                         class="drag-list"
@@ -37,7 +37,7 @@
 
 <script lang="ts" setup>
 import draggable from "vuedraggable";
-import { basicComponents } from "./column.data";
+import basicComponents, { type BasicComponents } from "./column.data";
 import { useFormData } from "@/hooks/useFormData";
 import { useDebounceFn } from "@vueuse/core";
 import { deepClone } from "@/utils";
@@ -46,26 +46,22 @@ const { createJson } = useFormData();
 
 const keyword = ref("");
 
-const componentList = ref<any[]>(basicComponents);
+const componentList = ref(basicComponents);
 
 const openList = computed(() => {
     return unref(componentList).map((item) => item.type);
 });
 
-const handleClone = (e: any) => {
-    return createJson(e);
-};
-
 const handleSearch = useDebounceFn((val: string) => {
-    const deepList = deepClone(basicComponents);
+    const deepList: BasicComponents[] = deepClone(basicComponents);
     if (!val) {
         componentList.value = deepList;
         return;
     }
-    deepList.forEach((item: any) => {
-        item.children = item.children.filter((child: any) => child.title.includes(val));
+    deepList.forEach((item) => {
+        item.children = item.children.filter((child) => child.title.includes(val));
     });
-    componentList.value = deepList.filter((item: any) => item.children.length > 0);
+    componentList.value = deepList.filter((item) => item.children.length > 0);
 }, 100);
 
 watch(keyword, (val) => {

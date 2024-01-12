@@ -1,6 +1,6 @@
 import { transformObject, transformEvent } from "@/utils";
 
-const renderCode = (config: any) => {
+const renderCode = (config: Component) => {
     const { model, parentModel, dateType, onEvent, ...rest } = config;
     return `<el-date-picker v-model="${parentModel}['${model}']"  type="${dateType}" ${transformObject(rest)} ${transformEvent(onEvent)}/>`;
 };

@@ -46,9 +46,9 @@ export default (): UserConfig => {
                 resolvers: [ElementPlusResolver()]
             }),
             Components({
-                extensions: ["vue", "md"],
+                extensions: ["vue", "tsx", "md"],
                 dts: resolve("./src/auto-imports.d.ts"),
-                include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
+                include: [/\.vue$/, /\.tsx$/, /\.vue\?vue/, /\.md$/],
                 exclude: [/[\\/]node_modules[\\/]/, /[\\/]\.git[\\/]/, /[\\/]\.nuxt[\\/]/],
                 resolvers: [ElementPlusResolver()]
             }),

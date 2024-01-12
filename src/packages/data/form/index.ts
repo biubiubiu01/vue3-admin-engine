@@ -11,6 +11,8 @@ export default createComponent({
         children: []
     },
 
+    isWrapper: true,
+
     icon: "svg-form",
 
     description: "form组件"

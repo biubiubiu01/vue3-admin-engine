@@ -17,7 +17,7 @@ const props = defineProps({
         type: [String, Number, Boolean]
     },
     options: {
-        type: Array as PropType<any[]>,
+        type: Array as PropType<AnyObject[]>,
         default: () => []
     },
     defaultValue: {
@@ -31,5 +31,5 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue"]);
 
-const value: any = useVModel(props, "modelValue", emit, { passive: true, defaultValue: props.defaultValue });
+const value: Ref<string | number | boolean | undefined> = useVModel(props, "modelValue", emit, { passive: true, defaultValue: props.defaultValue });
 </script>

@@ -32,7 +32,7 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue"]);
 
-const list: any = useVModel(props, "modelValue", emit, { passive: true });
+const list: Ref<any[]> = useVModel(props, "modelValue", emit, { passive: true });
 
 const handleAddRow = () => {
     list.value.push(addColItem());

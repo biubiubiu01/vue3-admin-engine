@@ -6,7 +6,8 @@
  * @FilePath: \vue3-form-drag\src\constant\date.ts
  *
  */
-export const dateOption = [
+
+export const dateOption: DateOption[] = [
     {
         label: "日(date)",
         value: "date",
@@ -33,7 +34,7 @@ export const dateOption = [
     }
 ];
 
-export const dateRangeOption = [
+export const dateRangeOption: DateOption[] = [
     {
         label: "日期范围(daterange)",
         value: "daterange",

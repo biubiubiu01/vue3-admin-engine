@@ -17,5 +17,7 @@ export default createComponent({
         }
     ],
 
+    isFormItem: true,
+
     description: "自定义input-number组件"
 });

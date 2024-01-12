@@ -8,8 +8,10 @@ export const addColItem = (config: any = {}) => {
     };
 
     return {
+        type: "col",
         id: useNanoid(),
         label: "col容器",
+        style: {},
         ...Object.assign(defaultConfig, config)
     };
 };
@@ -26,6 +28,8 @@ export default createComponent({
     },
 
     icon: "svg-row",
+
+    allowClear: false,
 
     description: "row容器组件"
 });

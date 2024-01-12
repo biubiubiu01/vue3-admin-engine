@@ -6,15 +6,28 @@ import { deepClone } from "@/utils";
 const { setItem, getItem } = useStorage("local");
 const sessionKey = "PAGE_SCHEMA";
 
-const state = reactive<any>({
+interface Schema {
+    schemaJson: Component[];
+    activeId: string;
+}
+
+interface SchemaPath {
+    data: Component;
+    path: string;
+}
+
+const id = useNanoid();
+
+const state = reactive<Schema>({
     schemaJson: [],
-    activeId: ""
+    activeId: id
 });
 
 const cacheSchema = JSON.parse(getItem(sessionKey));
 
-if (cacheSchema) {
+if (cacheSchema && cacheSchema.length > 0) {
     state.schemaJson = cacheSchema;
+    state.activeId = "";
 }
 
 export const useFormData = () => {
@@ -32,8 +45,12 @@ export const useFormData = () => {
         return getNodeIndex(unref(getActiveId)) === getParentById(unref(getActiveId)).length - 1;
     });
 
+    const pageDisabled = computed(() => {
+        return getSchemaJson.value.length === 1 && getSchemaJson.value[0].id === getActiveId.value;
+    });
+
     const getNodeIndex = (id: string) => {
-        return getParentById(id).findIndex((item: any) => item.id === id);
+        return getParentById(id).findIndex((item: Component) => item.id === id);
     };
 
     const getNodeById = (id: string, list = getSchemaJson.value): any => {
@@ -63,11 +80,11 @@ export const useFormData = () => {
         return getSchemaJson.value;
     };
 
-    const getPathById = (json: any[], id: string): string[] | null => {
+    const getPathById = (json: Component[], id: string): string[] | null => {
         let resolved: boolean = false;
         let paths: Array<string> = [];
 
-        const stack: Array<any> = json.map((item) => {
+        const stack: Array<SchemaPath> = json.map((item) => {
             return {
                 path: item.id,
                 data: item
@@ -75,7 +92,7 @@ export const useFormData = () => {
         });
 
         while (stack.length) {
-            const item = stack.shift();
+            const item = stack.shift() as SchemaPath;
             const data = item.data;
             const path = item.path;
 
@@ -86,7 +103,7 @@ export const useFormData = () => {
             }
 
             if (data?.children?.length) {
-                data.children.forEach((child: any) => {
+                data.children.forEach((child: Component) => {
                     stack.push({
                         data: child,
                         path: `${data.id}/${child.id}`
@@ -98,27 +115,26 @@ export const useFormData = () => {
         return resolved ? paths : null;
     };
 
-    const createJson = (json: any) => {
+    const createJson = (json: Component) => {
         const newClone = deepClone(json.scaffold ?? json);
 
         if (newClone.children) {
-            newClone.children = newClone.children.map((item: any) => createJson(item));
+            newClone.children = newClone.children.map((item: Component) => createJson(item));
         }
 
         const id = useNanoid();
         newClone.id = id;
-        newClone.model = `${newClone.type}_${id}`;
+        newClone.model = id;
 
         return newClone;
     };
 
-    const copyJson = (json: any) => {
+    const copyJson = (json: Component) => {
         const newJson = createJson(json);
         const parentJson = getParentById(json.id);
         const index = getNodeIndex(json.id);
 
-        parentJson.splice(index, 0, newJson);
-        setActive(newJson.id);
+        parentJson.splice(index + 1, 0, newJson);
     };
 
     const moveToBefore = (id: string) => {
@@ -138,14 +154,20 @@ export const useFormData = () => {
     const deleteJson = (id: string) => {
         const index = getNodeIndex(id);
         const parentJson = getParentById(id);
+        state.activeId = "";
 
         parentJson.splice(index, 1);
     };
 
     const clearJson = () => {
-        state.schemaJson = [];
+        state.schemaJson[0].children = [];
+        state.schemaJson = state.schemaJson.slice(0, 1);
         state.activeId = "";
         saveSession(false);
+    };
+
+    const clearCurrent = (json: Component) => {
+        json.children = [];
     };
 
     const setActive = (id: string) => {
@@ -160,7 +182,7 @@ export const useFormData = () => {
         }
     };
 
-    const updateSchema = (json: any[]) => {
+    const updateSchema = (json: Component[]) => {
         state.schemaJson = json;
     };
 
@@ -171,6 +193,7 @@ export const useFormData = () => {
         getActiveInfo,
         beforeDisabled,
         afterDisabled,
+        pageDisabled,
 
         copyJson,
         createJson,
@@ -180,6 +203,7 @@ export const useFormData = () => {
         setActive,
         moveToBefore,
         moveToAfter,
-        updateSchema
+        updateSchema,
+        clearCurrent
     };
 };

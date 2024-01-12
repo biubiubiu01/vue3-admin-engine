@@ -10,7 +10,26 @@ import { useWidgetList } from "@/hooks/useWidgetList";
 
 const { getFormWidgetList, getCustomWidgetList, getLayoutWidgetList, getDataWidgetList, getBasicWidgetList } = useWidgetList();
 
-export const basicComponents = [
+export interface BasicComponents {
+    title: string;
+    type: string;
+    icon: string;
+    children: ComponentConfig[];
+}
+
+const basicComponents: BasicComponents[] = [
+    {
+        title: "数据容器",
+        type: "data",
+        icon: "svg-data",
+        children: getDataWidgetList
+    },
+    {
+        title: "布局容器",
+        type: "layout",
+        icon: "svg-layout",
+        children: getLayoutWidgetList
+    },
     {
         title: "表单组件",
         type: "form",
@@ -24,21 +43,11 @@ export const basicComponents = [
         children: getCustomWidgetList
     },
     {
-        title: "布局容器",
-        type: "layout",
-        icon: "svg-layout",
-        children: getLayoutWidgetList
-    },
-    {
-        title: "数据容器",
-        type: "data",
-        icon: "svg-data",
-        children: getDataWidgetList
-    },
-    {
         title: "基础组件",
         type: "basic",
         icon: "svg-basic",
         children: getBasicWidgetList
     }
 ];
+
+export default basicComponents;

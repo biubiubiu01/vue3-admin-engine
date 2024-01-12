@@ -2,7 +2,7 @@ import { deepClone } from "@/utils";
 import { useWidgetList } from "./useWidgetList";
 
 export const useFormRules = (json: any[]) => {
-    const { isFormComp } = useWidgetList();
+    const { isFormItem } = useWidgetList();
 
     const getRules = computed(() => {
         const rules: any = {};
@@ -17,7 +17,7 @@ export const useFormRules = (json: any[]) => {
                 });
             }
 
-            if (!isFormComp(item.type)) {
+            if (!isFormItem(item.type)) {
                 continue;
             }
 

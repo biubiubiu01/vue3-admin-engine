@@ -1,4 +1,17 @@
-const pluginList: any[] = [
+interface Plugin {
+    pluginName: string;
+    url: string;
+    import: string;
+}
+
+interface Component {
+    componentName: string;
+    component: string;
+    url: string;
+    import: string;
+}
+
+const pluginList: Plugin[] = [
     {
         pluginName: "dayjs",
         url: "https://unpkg.com/dayjs@1.8.21/dayjs.min.js;",
@@ -6,7 +19,7 @@ const pluginList: any[] = [
     }
 ];
 
-const componentList: any[] = [
+const componentList: Component[] = [
     {
         componentName: "base-input-number",
         component: "baseInputNumber",
@@ -21,6 +34,6 @@ const componentList: any[] = [
     }
 ];
 
-export const getPlugin = (plugin: string) => pluginList.find((item: any) => item.pluginName === plugin);
+export const getPlugin = (plugin: string) => pluginList.find((item) => item.pluginName === plugin);
 
-export const getComponent = (name: string) => componentList.find((item: any) => item.componentName === name);
+export const getComponent = (name: string) => componentList.find((item) => item.componentName === name);

@@ -1,6 +1,6 @@
 import { transformObject, transformEvent } from "@/utils";
 
-const renderCode = (config: any) => {
+const renderCode = (config: Component) => {
     const { model, options, parentModel, onEvent, ...rest } = config;
 
     return `<el-select v-model="${parentModel}.${model}" ${transformObject(rest)} ${transformEvent(onEvent)}>
@@ -8,8 +8,8 @@ const renderCode = (config: any) => {
     </el-select>`;
 };
 
-const renderOption = (options: any[]) => {
-    return options.reduce((t: string, c: any) => {
+const renderOption = (options: AnyObject[]) => {
+    return options.reduce((t: string, c: AnyObject) => {
         return (t += `<el-option label=${c.label} value=${c.value}></el-option>\n`);
     }, "");
 };

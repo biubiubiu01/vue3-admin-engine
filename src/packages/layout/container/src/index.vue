@@ -1,10 +1,6 @@
 <template>
-    <component :is="tag" class="base-container" v-bind="getAttrStyle">
-        <template v-if="!preview">
-            <drag-group :list="children" />
-            <div class="wrapper-empty" v-if="!children.length">将组件拖拽到此处</div>
-        </template>
-        <slot v-else></slot>
+    <component :is="tag" :style="getAttrStyle" class="container-wrapper">
+        <slot></slot>
     </component>
 </template>
 
@@ -14,30 +10,18 @@ const props = defineProps({
         type: String,
         default: "div"
     },
-    preview: {
-        type: Boolean,
-        default: false
-    },
-    id: {
-        type: String,
-        default: ""
-    },
-    data: {
-        type: Object
-    },
-    children: {
-        type: Array,
-        default: () => []
-    },
     showType: {
         type: String
     },
     justify: String,
-    align: String
+    align: String,
+    children: {
+        type: Array
+    }
 });
 
 const getAttrStyle = computed(() => {
-    const { preview, showType, justify, align } = props;
+    const { showType, justify, align } = props;
     const styleObj: any = {};
 
     if (showType) {
@@ -50,26 +34,8 @@ const getAttrStyle = computed(() => {
         }
     }
 
-    return {
-        class: { "container-editor": !preview },
-        style: styleObj
-    };
+    return styleObj;
 });
 </script>
 
-<style lang="scss" scoped>
-.base-container {
-    position: relative;
-    z-index: 22;
-    width: 100%;
-
-    &.container-editor {
-        background-color: var(--el-border-color-extra-light);
-        min-height: 70px;
-
-        .drag-editor {
-            min-height: 70px;
-        }
-    }
-}
-</style>
+<style lang="scss" scoped></style>

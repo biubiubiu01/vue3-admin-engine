@@ -10,7 +10,7 @@ import { isEmpty } from "@/utils";
 
 const props = defineProps({
     options: {
-        type: Array as PropType<any[]>,
+        type: Array as PropType<AnyObject[]>,
         default: () => []
     },
     modelValue: {

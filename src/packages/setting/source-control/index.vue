@@ -1,39 +1,49 @@
 <template>
-    <el-popover placement="top-start" title="样式源码" :width="500" trigger="click" @show="handleShow">
+    <el-popover placement="top-start" title="样式源码" :width="500" trigger="click" @show="handleShow" @hide="handleSave">
         <template #reference>
             <el-button class="w100" size="default"> <base-icon icon="edit" class="mr5" />编辑行内样式源码 </el-button>
         </template>
         <code-editor v-model="code" height="400px" />
     </el-popover>
+    <div class="mask-container" v-if="visibleShow"></div>
 </template>
 
 <script lang="ts" setup>
-import { useVModel } from "@vueuse/core";
-import { transformStyle } from "@/utils";
-
-const props = defineProps({
-    modelValue: {
-        type: String,
-        default: `#main{\r\n  \r\n}`
-    },
-    data: {
-        type: Object
-    }
-});
+import { useFormData } from "@/hooks/useFormData";
+import { transformStringToStyle } from "@/utils";
 
 const emit = defineEmits(["update:modelValue"]);
 
-const code: Ref<string> = useVModel(props, "modelValue", emit, { passive: true });
+const code = ref("");
+const visibleShow = ref(false);
+
+const { getActiveInfo } = useFormData();
 
 const handleShow = () => {
-    const styleObj = transformStyle(props.data);
-
-    const styleCode = Object.entries(styleObj)
+    visibleShow.value = true;
+    const styleCode = Object.entries(getActiveInfo.value.style)
         .map((x) => x.join(":") + ";")
         .join("");
-
     code.value = `#main{\r\n ${styleCode} \r\n}`;
+};
+
+const handleSave = () => {
+    const style = transformStringToStyle(code.value);
+
+    getActiveInfo.value.style = style;
+    setTimeout(() => {
+        visibleShow.value = false;
+    }, 200);
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.mask-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+}
+</style>
